@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-10-2017 a las 08:44:37
--- Versión del servidor: 10.1.21-MariaDB
--- Versión de PHP: 5.6.30
+-- Tiempo de generación: 03-09-2018 a las 09:04:27
+-- Versión del servidor: 10.1.28-MariaDB
+-- Versión de PHP: 5.6.32
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -23,22 +25,48 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `acount_bank`
+--
+
+CREATE TABLE `acount_bank` (
+  `id` int(11) NOT NULL,
+  `id_bank` int(11) NOT NULL,
+  `number_acount` varchar(30) NOT NULL,
+  `descriptions` varchar(250) NOT NULL,
+  `stat` int(11) NOT NULL,
+  `id_user_reg` int(11) NOT NULL,
+  `data_time` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `acount_bank`
+--
+
+INSERT INTO `acount_bank` (`id`, `id_bank`, `number_acount`, `descriptions`, `stat`, `id_user_reg`, `data_time`) VALUES
+(2, 7, '15151515', 'Prueba de banco / cuenta', 1, 1, '2018-09-03 01:11:10');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `bank`
 --
 
 CREATE TABLE `bank` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `stat` int(11) NOT NULL
+  `stat` int(11) NOT NULL,
+  `id_user_reg` int(11) NOT NULL,
+  `data_time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `bank`
 --
 
-INSERT INTO `bank` (`id`, `name`, `stat`) VALUES
-(1, 'Banesco', 1),
-(2, 'Provincial', 1);
+INSERT INTO `bank` (`id`, `name`, `stat`, `id_user_reg`, `data_time`) VALUES
+(6, 'Provincial BBVA', 1, 1, '2018-09-03 00:32:37'),
+(7, 'BOD', 1, 1, '2018-09-03 00:33:01'),
+(8, 'Banesco', 1, 1, '2018-09-03 00:33:40');
 
 -- --------------------------------------------------------
 
@@ -49,16 +77,19 @@ INSERT INTO `bank` (`id`, `name`, `stat`) VALUES
 CREATE TABLE `country` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `stat` int(11) NOT NULL
+  `stat` int(11) NOT NULL,
+  `id_user_reg` int(11) NOT NULL,
+  `data_time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `country`
 --
 
-INSERT INTO `country` (`id`, `name`, `stat`) VALUES
-(1, 'Panama', 1),
-(2, 'Uruguay', 1);
+INSERT INTO `country` (`id`, `name`, `stat`, `id_user_reg`, `data_time`) VALUES
+(1, 'Panama', 1, 0, '0000-00-00 00:00:00'),
+(2, 'Uruguay', 1, 0, '0000-00-00 00:00:00'),
+(3, 'Espania', 0, 1, '2018-09-02 07:21:01');
 
 -- --------------------------------------------------------
 
@@ -187,6 +218,28 @@ INSERT INTO `type_coin` (`id`, `name`, `stat`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `type_mov`
+--
+
+CREATE TABLE `type_mov` (
+  `id` int(11) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `stat` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `type_mov`
+--
+
+INSERT INTO `type_mov` (`id`, `name`, `stat`) VALUES
+(1, 'Transferencia(Debito)', 1),
+(2, 'Transferencia(Credito)', 1),
+(3, 'Deposito(Debito)', 1),
+(4, 'Deposito(Credito)', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `type_transaction`
 --
 
@@ -221,7 +274,9 @@ CREATE TABLE `type_user` (
 
 INSERT INTO `type_user` (`id`, `name`, `stat`) VALUES
 (1, 'Administrador', 1),
-(2, 'User', 1);
+(2, 'Contabilidad', 1),
+(3, 'Ventas', 1),
+(4, 'Pagos', 1);
 
 -- --------------------------------------------------------
 
@@ -240,16 +295,22 @@ CREATE TABLE `users` (
   `stat` int(11) NOT NULL,
   `location` int(11) NOT NULL,
   `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `email` varchar(100) NOT NULL
+  `email` varchar(100) NOT NULL,
+  `id_user_reg` int(11) NOT NULL,
+  `percentage` decimal(3,2) NOT NULL,
+  `referred` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `user`, `name`, `last_name`, `id_roll_user`, `password`, `image`, `stat`, `location`, `create_date`, `email`) VALUES
-(1, 'chicho', 'Blaster', 'Slovar', 1, '321', 'image_users/1.jpg', 1, 1, '2017-10-19 11:48:15', ''),
-(2, 'orga', 'duval', 'games', 1, 'cygGLqlfhk6J7w7XuMGWgpQOJWizlAUFi2Yt5/Q68xM=', 'image_users/2_thumb.jpg', 1, 2, '2017-10-19 12:14:46', 'orga@bolivartoday.com');
+INSERT INTO `users` (`id`, `user`, `name`, `last_name`, `id_roll_user`, `password`, `image`, `stat`, `location`, `create_date`, `email`, `id_user_reg`, `percentage`, `referred`) VALUES
+(1, 'chicho', 'Blaster', 'Slovar', 1, '321', 'image_users/1.jpg', 1, 1, '2017-10-19 11:48:15', '', 0, '0.00', 0),
+(2, 'orga', 'duval', 'games', 1, 'cygGLqlfhk6J7w7XuMGWgpQOJWizlAUFi2Yt5/Q68xM=', 'image_users/2_thumb.jpg', 1, 2, '2017-10-19 12:14:46', 'orga@bolivartoday.com', 0, '0.00', 0),
+(3, 'prueba', 'prueba', 'prueba', 3, 'DbOF93Ai+fSAWROreNSOTlIcJ+tTlyY6tpOpJKZsZtQ=', 'image_users/3_thumb.jpg', 1, 3, '2018-09-02 00:29:30', 'prueba@gmail.com', 1, '2.00', 0),
+(4, 'prueba2', 'prueba2', 'prueba2', 3, 'cygGLqlfhk6J7w7XuMGWgpQOJWizlAUFi2Yt5/Q68xM=', 'image_users/4_thumb.jpg', 1, 1, '2018-09-02 00:54:41', 'hh@hh.com', 1, '0.20', 3),
+(5, 'qweq', 'weqweq', 'weqw', 0, 'cygGLqlfhk6J7w7XuMGWgpQOJWizlAUFi2Yt5/Q68xM=', 'image_users/5_thumb.jpg', 1, 2, '2018-09-02 01:00:12', 'eqweq@ada.com', 1, '0.20', 0);
 
 -- --------------------------------------------------------
 
@@ -278,6 +339,12 @@ INSERT INTO `value_dollar` (`id`, `value_dollar`, `date_time`, `id_user`, `stat`
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `acount_bank`
+--
+ALTER TABLE `acount_bank`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `bank`
@@ -322,6 +389,12 @@ ALTER TABLE `type_coin`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `type_mov`
+--
+ALTER TABLE `type_mov`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `type_transaction`
 --
 ALTER TABLE `type_transaction`
@@ -350,60 +423,84 @@ ALTER TABLE `value_dollar`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `acount_bank`
+--
+ALTER TABLE `acount_bank`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `bank`
 --
 ALTER TABLE `bank`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
 --
 -- AUTO_INCREMENT de la tabla `country`
 --
 ALTER TABLE `country`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT de la tabla `customer`
 --
 ALTER TABLE `customer`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT de la tabla `main_pay`
 --
 ALTER TABLE `main_pay`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
 --
 -- AUTO_INCREMENT de la tabla `master_stat`
 --
 ALTER TABLE `master_stat`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT de la tabla `transaction`
 --
 ALTER TABLE `transaction`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT de la tabla `type_coin`
 --
 ALTER TABLE `type_coin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `type_mov`
+--
+ALTER TABLE `type_mov`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT de la tabla `type_transaction`
 --
 ALTER TABLE `type_transaction`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT de la tabla `type_user`
 --
 ALTER TABLE `type_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 --
 -- AUTO_INCREMENT de la tabla `value_dollar`
 --
 ALTER TABLE `value_dollar`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
