@@ -1,0 +1,409 @@
+-- phpMyAdmin SQL Dump
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 23-10-2017 a las 08:44:37
+-- Versión del servidor: 10.1.21-MariaDB
+-- Versión de PHP: 5.6.30
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `bt`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `bank`
+--
+
+CREATE TABLE `bank` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `stat` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `bank`
+--
+
+INSERT INTO `bank` (`id`, `name`, `stat`) VALUES
+(1, 'Banesco', 1),
+(2, 'Provincial', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `country`
+--
+
+CREATE TABLE `country` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `stat` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `country`
+--
+
+INSERT INTO `country` (`id`, `name`, `stat`) VALUES
+(1, 'Panama', 1),
+(2, 'Uruguay', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `customer`
+--
+
+CREATE TABLE `customer` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `phone` varchar(50) NOT NULL,
+  `id_reside_country` int(11) NOT NULL,
+  `image` varchar(250) NOT NULL,
+  `stat` int(11) NOT NULL,
+  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_user_create` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `customer`
+--
+
+INSERT INTO `customer` (`id`, `name`, `last_name`, `email`, `phone`, `id_reside_country`, `image`, `stat`, `create_date`, `id_user_create`) VALUES
+(2, 'PEDRO DAVID', 'ARRIETA PEREZ', 'pedroarrieta25@hotmail.com', '32165', 1, 'image_users/2_thumb.png', 1, '2017-10-20 21:54:46', 1),
+(3, 'Cecilia', 'Arandias', 'costos@costos.com', '462154', 2, 'image_users/3_thumb.jpeg', 1, '2017-10-21 13:09:11', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `main_pay`
+--
+
+CREATE TABLE `main_pay` (
+  `id` int(11) NOT NULL,
+  `id_transaction` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `date_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `amount_paid` decimal(11,0) NOT NULL,
+  `messaje` text NOT NULL,
+  `stat` int(11) NOT NULL,
+  `attached` varchar(225) NOT NULL,
+  `id_bank` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `main_pay`
+--
+
+INSERT INTO `main_pay` (`id`, `id_transaction`, `id_user`, `date_time`, `amount_paid`, `messaje`, `stat`, `attached`, `id_bank`) VALUES
+(2, 4, 1, '2017-10-22 18:32:43', '15000000', 'pago completo', 1, 'attached_invoice/2_thumb.jpg', 1),
+(8, 2, 1, '2017-10-23 00:56:44', '2345', 'qwerfds', 1, '', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `master_stat`
+--
+
+CREATE TABLE `master_stat` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `stat` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `master_stat`
+--
+
+INSERT INTO `master_stat` (`id`, `name`, `stat`) VALUES
+(1, 'Pendiente por Pago', 1),
+(2, 'Abonada', 1),
+(3, 'Pagada', 1),
+(4, 'Anulada', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `transaction`
+--
+
+CREATE TABLE `transaction` (
+  `id` int(11) NOT NULL,
+  `id_type_transaction` int(11) NOT NULL,
+  `id_customer` int(11) NOT NULL,
+  `id_user_register` int(11) NOT NULL,
+  `date_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `amount` decimal(11,2) NOT NULL,
+  `id_type_coin` int(11) NOT NULL,
+  `price_dollar` decimal(11,2) NOT NULL,
+  `messaje` text NOT NULL,
+  `stat` int(11) NOT NULL,
+  `amount_transfer` decimal(11,2) NOT NULL,
+  `remaining` decimal(11,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `transaction`
+--
+
+INSERT INTO `transaction` (`id`, `id_type_transaction`, `id_customer`, `id_user_register`, `date_time`, `amount`, `id_type_coin`, `price_dollar`, `messaje`, `stat`, `amount_transfer`, `remaining`) VALUES
+(2, 1, 2, 1, '2017-10-21 19:03:29', '250.00', 1, '30000.00', 'algo', 2, '800000.00', '649655.00'),
+(3, 1, 2, 1, '2017-10-22 08:59:40', '250.00', 1, '30000.00', 'asddcdc', 4, '7500000.00', '7500000.00'),
+(4, 1, 3, 1, '2017-10-22 09:01:09', '500.00', 1, '30000.00', 'xqwqdw', 3, '15000000.00', '0.00');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `type_coin`
+--
+
+CREATE TABLE `type_coin` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `stat` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `type_coin`
+--
+
+INSERT INTO `type_coin` (`id`, `name`, `stat`) VALUES
+(1, 'Dolares', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `type_transaction`
+--
+
+CREATE TABLE `type_transaction` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `stat` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `type_transaction`
+--
+
+INSERT INTO `type_transaction` (`id`, `name`, `stat`) VALUES
+(1, 'Comprar Bs.', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `type_user`
+--
+
+CREATE TABLE `type_user` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `stat` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `type_user`
+--
+
+INSERT INTO `type_user` (`id`, `name`, `stat`) VALUES
+(1, 'Administrador', 1),
+(2, 'User', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `user` varchar(50) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `id_roll_user` int(11) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `image` varchar(250) NOT NULL,
+  `stat` int(11) NOT NULL,
+  `location` int(11) NOT NULL,
+  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `email` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `users`
+--
+
+INSERT INTO `users` (`id`, `user`, `name`, `last_name`, `id_roll_user`, `password`, `image`, `stat`, `location`, `create_date`, `email`) VALUES
+(1, 'chicho', 'Blaster', 'Slovar', 1, '321', 'image_users/1.jpg', 1, 1, '2017-10-19 11:48:15', ''),
+(2, 'orga', 'duval', 'games', 1, 'cygGLqlfhk6J7w7XuMGWgpQOJWizlAUFi2Yt5/Q68xM=', 'image_users/2_thumb.jpg', 1, 2, '2017-10-19 12:14:46', 'orga@bolivartoday.com');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `value_dollar`
+--
+
+CREATE TABLE `value_dollar` (
+  `id` int(11) NOT NULL,
+  `value_dollar` decimal(11,0) NOT NULL,
+  `date_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_user` int(11) NOT NULL,
+  `stat` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `value_dollar`
+--
+
+INSERT INTO `value_dollar` (`id`, `value_dollar`, `date_time`, `id_user`, `stat`) VALUES
+(1, '1', '2017-10-21 09:08:47', 1, 1),
+(2, '50', '2017-10-21 09:41:01', 1, 1),
+(3, '300', '2017-10-21 11:51:25', 1, 1),
+(4, '30000', '2017-10-21 17:15:41', 1, 1);
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `bank`
+--
+ALTER TABLE `bank`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `country`
+--
+ALTER TABLE `country`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `customer`
+--
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `main_pay`
+--
+ALTER TABLE `main_pay`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `master_stat`
+--
+ALTER TABLE `master_stat`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `transaction`
+--
+ALTER TABLE `transaction`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `type_coin`
+--
+ALTER TABLE `type_coin`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `type_transaction`
+--
+ALTER TABLE `type_transaction`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `type_user`
+--
+ALTER TABLE `type_user`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `value_dollar`
+--
+ALTER TABLE `value_dollar`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `bank`
+--
+ALTER TABLE `bank`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT de la tabla `country`
+--
+ALTER TABLE `country`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT de la tabla `customer`
+--
+ALTER TABLE `customer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `main_pay`
+--
+ALTER TABLE `main_pay`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT de la tabla `master_stat`
+--
+ALTER TABLE `master_stat`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT de la tabla `transaction`
+--
+ALTER TABLE `transaction`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT de la tabla `type_coin`
+--
+ALTER TABLE `type_coin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT de la tabla `type_transaction`
+--
+ALTER TABLE `type_transaction`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT de la tabla `type_user`
+--
+ALTER TABLE `type_user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT de la tabla `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT de la tabla `value_dollar`
+--
+ALTER TABLE `value_dollar`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
