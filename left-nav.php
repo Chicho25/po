@@ -108,43 +108,50 @@
                           </a>
                         </li>
                         <li <?php if(isset($editAcount)) echo $editAcount;?>>
-                          <a href="#"><i class="i i-dot"></i>
+                          <a href="view_acount.php"><i class="i i-dot"></i>
                             <span>Ver Cuenta</span>
                           </a>
                         </li>
                       </ul>
                     </li>
-                    <li <?php if(isset($mantenimance)) echo $mantenimance;?>>
+                    <li <?php if(isset($pay)) echo $pay;?>>
                       <a href="#" class="auto">
                         <span class="pull-right text-muted">
                           <i class="i i-circle-sm-o text"></i>
                           <i class="i i-circle-sm text-active"></i>
                         </span>
                         <i class="i i-dot"></i>
-                        <span>Principal</span>
+                        <span>Banca</span>
                       </a>
                       <ul class="nav dker">
-                        <li <?php if(isset($registerCountry)) echo $registerCountry;?>>
-                          <a href="#"><i class="i i-dot"></i>
-                            <span>Principal Admin</span>
-                          </a>
-                        </li>
-                        <li <?php if(isset($editCountry)) echo $editCountry;?>>
-                          <a href="#"><i class="i i-dot"></i>
-                            <span>Principal Contabilidad</span>
-                          </a>
-                        </li>
-                        <li <?php if(isset($editAcount)) echo $editAcount;?>>
-                          <a href="#"><i class="i i-dot"></i>
-                            <span>Principal Pagos</span>
-                          </a>
-                        </li>
-                        <li <?php if(isset($editAcount)) echo $editAcount;?>>
-                          <a href="#"><i class="i i-dot"></i>
-                            <span>Principal Ventas</span>
+                        <li <?php if(isset($registerPay)) echo $registerPay;?>>
+                          <a href="register_mov_bank.php"><i class="i i-dot"></i>
+                            <span>Registro Movimiento</span>
                           </a>
                         </li>
                       </ul>
+                      <ul class="nav dker">
+                        <li <?php if(isset($registerPay)) echo $registerPay;?>>
+                          <a href="#"><i class="i i-dot"></i>
+                            <span>Ver Movimientos</span>
+                          </a>
+                        </li>
+                      </ul>
+                      <ul class="nav dker">
+                        <li <?php if(isset($registerPay)) echo $registerPay;?>>
+                          <a href="#"><i class="i i-dot"></i>
+                            <span>Saldos</span>
+                          </a>
+                        </li>
+                      </ul>
+                      <ul class="nav dker">
+                        <li <?php if(isset($registerPay)) echo $registerPay;?>>
+                          <a href="#"><i class="i i-dot"></i>
+                            <span>Estado de cuenta</span>
+                          </a>
+                        </li>
+                      </ul>
+
                     </li>
                     <li <?php if(isset($pay)) echo $pay;?>>
                       <a href="#" class="auto">
