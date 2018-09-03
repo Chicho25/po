@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="js/datepicker/datepicker.css" type="text/css" />
   <link rel="stylesheet" href="js/datatables/datatables.css" type="text/css" />
   <link rel="stylesheet" href="js/datatables/buttons.dataTables.min.css" type="text/css" />
+  <script src="js/jquery.min.js"></script>
   <!-- <link rel="stylesheet" href="js/datatables/datatables.css" type="text/css"/> -->
   <!--[if lt IE 9]>
     <script src="js/ie/html5shiv.js"></script>

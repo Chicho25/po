@@ -390,6 +390,142 @@
                           </table>
                         </div>
                     </div>
+                    <hr>
+                    <script type="text/javascript">
+                  $(function () {
+                     $('#container').highcharts({
+                         chart: {
+                             type: 'column'
+                         },
+                         title: {
+                             text: 'Resumen de Transacciones Por Pais'
+                         },
+                         subtitle: {
+                             text: ''
+                         },
+                         xAxis: {
+                             type: 'category',
+                             labels: {
+                                 rotation: -45,
+                                 style: {
+                                     fontSize: '13px',
+                                     fontFamily: 'Verdana, sans-serif'
+                                 }
+                             }
+                         },
+                         yAxis: {
+                             min: 0,
+                             title: {
+                                 text: 'Numero de Transacciones'
+                             }
+                         },
+                         legend: {
+                             enabled: false
+                         },
+                         tooltip: {
+                             pointFormat: 'Numero de transacciones : <b>{point.y:.1f} </b>'
+                         },
+                         series: [{
+                             name: 'Population',
+                             <?php /*$registro_gruas = GetRecords("select
+                                                                  id,
+                                                                  name_craner,
+                                                                  (select count(*) from crm_quot_producs where id_produc = crm_craner.id) as contar
+                                                                  from crm_craner ");*/ ?>
+                             data: [
+                               <?php /*foreach ($registro_gruas as $key => $value):
+                                    */  //if($value['id']==9){ continue; }
+                                  ?>
+                                      ['Peru', 50],
+                                      ['Panama', 25],
+                                      ['Colombia', 30],
+                                      ['Ecuador', 10],
+                                      ['Argentina', 45],
+                                      ['Uruguay', 9]
+                               <?php /*endforeach;*/ ?>
+                                      //['', 0]
+                             ],
+                             dataLabels: {
+                                 enabled: true,
+                                 rotation: -90,
+                                 color: '#FFFFFF',
+                                 align: 'right',
+                                 format: '{point.y:.1f}', // one decimal
+                                 y: 10, // 10 pixels down from the top
+                                 style: {
+                                     fontSize: '13px',
+                                     fontFamily: 'Verdana, sans-serif'
+                                 }
+                             }
+                         }]
+                     });
+                  });
+                    </script>
+
+                    <script type="text/javascript">
+                    $(function () {
+                    $('#container5').highcharts({
+                        title: {
+                            text: 'Linea de tiempo por año',
+                            x: -20 //center
+                        },
+                        subtitle: {
+                            text: 'Planet Online',
+                            x: -20
+                        },
+                        xAxis: {
+                            categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+                                'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'Cantidad'
+                            },
+                            plotLines: [{
+                                value: 0,
+                                width: 1,
+                                color: '#808080'
+                            }]
+                        },
+                        tooltip: {
+                            valueSuffix: ''
+                        },
+                        legend: {
+                            layout: 'vertical',
+                            align: 'right',
+                            verticalAlign: 'middle',
+                            borderWidth: 0
+                        },
+                        series: [{
+                            name: 'Transacciones ',
+                            <?php /*$ingresos = GetRecords("select
+                                                          (select count(*) from crm_entry where MONTH(date_form) = 01 ) as ene,
+                                                          (select count(*) from crm_entry where MONTH(date_form) = 02 ) as feb,
+                                                          (select count(*) from crm_entry where MONTH(date_form) = 03 ) as mar,
+                                                          (select count(*) from crm_entry where MONTH(date_form) = 04 ) as abr,
+                                                          (select count(*) from crm_entry where MONTH(date_form) = 05 ) as may,
+                                                          (select count(*) from crm_entry where MONTH(date_form) = 06 ) as jun,
+                                                          (select count(*) from crm_entry where MONTH(date_form) = 07 ) as jul,
+                                                          (select count(*) from crm_entry where MONTH(date_form) = 08 ) as ago,
+                                                          (select count(*) from crm_entry where MONTH(date_form) = 09 ) as sep,
+                                                          (select count(*) from crm_entry where MONTH(date_form) = 010 ) as oct,
+                                                          (select count(*) from crm_entry where MONTH(date_form) = 011 ) as nov,
+                                                          (select count(*) from crm_entry where MONTH(date_form) = 012 ) as dic ");   */ ?>
+
+                            <?php /*foreach($ingresos as $key => $value){ */ ?>
+                            data: [30, 50, 40,
+                            90, 100, 111,
+                            100, 60, 200,
+                            70, 80, 200]
+                            <?php //} ?>
+                        }]
+                    });
+                    });
+                    </script>
+                    <script src="po_grafict/js/highcharts.js"></script>
+                    <script src="po_grafict/js/modules/exporting.js"></script>
+                    <div id="container" style="min-width: 300px; height: 400px; margin: 0 auto;"></div>
+                    <div id="container5" style="min-width: 300px; height: 400px; margin: 0 auto;"></div>
                   </div>
                 </div>
                </div>
@@ -397,4 +533,4 @@
            </section>
        </section>
    </section>
-<?php include("footer.php"); ?>
+<?php  include("footer.php"); ?>

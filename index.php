@@ -62,6 +62,7 @@
 <body class="" >
   <section id="content" class="m-t-lg wrapper-md animated fadeInUp">
     <div class="container aside-xl">
+      <img src="images/planetonline.png" width="300" alt="" style="display: block; margin:auto;">
       <a class="navbar-brand block">Login</a>
       <section class="m-b-lg">
         <header class="wrapper text-center">
