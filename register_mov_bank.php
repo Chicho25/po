@@ -34,22 +34,24 @@
 
      }
 
-    if(isset($_POST['submitAcount']))
+    if(isset($_POST['submitMov']))
      {
             $arrVal = array(
                           "id_bank" => $_POST['bank'],
-                          "number_acount" => $_POST['number_acount'],
+                          "id_acount" => $_POST['acount_bank'],
+                          "type_mov" => $_POST['type_mov'],
+                          "amount"=> $_POST['mount'],
                           "descriptions" => $_POST['descriptions'],
                           "stat" => 1,
                           "id_user_reg" => $_SESSION['USER_ID'],
                           "data_time" => date("Y-m-d H:i:s")
                          );
 
-          $nId = InsertRec("acount_bank", $arrVal);
+          $nId = InsertRec("mov_bank", $arrVal);
 
           $message = '<div class="alert alert-success">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            <strong>Cuneta Creado</strong>
+                            <strong>Movimiento Bancario Registrado</strong>
                         </div>';
 
     }
@@ -73,7 +75,7 @@
                           <div class="form-group required">
                             <label class="col-lg-4 text-right control-label font-bold">Seleccionar Banco</label>
                             <div class="col-lg-4">
-                                <select class="chosen-select form-control" name="bank" required="required">
+                                <select id="banco" class="form-control" name="bank" required="required">
                                         <option value="">Seleccionar</option>
                                         <?PHP
                                         $arrKindMeetings = GetRecords("Select * from bank where stat = 1");
@@ -94,28 +96,18 @@
                           <div class="form-group required">
                             <label class="col-lg-4 text-right control-label font-bold">Seleccionar Cuenta</label>
                             <div class="col-lg-4">
-                            <select class="chosen-select form-control" name="bank" required="required">
-                                        <option value="">Seleccionar</option>
-                                        <?PHP
-                                        $arrKindMeetings = GetRecords("Select * from bank where stat = 1");
-                                        foreach ($arrKindMeetings as $key => $value) {
-                                        $kinId = $value['id'];
-                                        $kinDesc = $value['name'];
-                                        ?>
-                                        <option value="<?php echo $kinId?>"><?php echo $kinDesc?></option>
-                                        <?php
-                                        }
-                                        ?>
-                                </select>
+                              <select id="cuenta" class="form-control" name="acount_bank" required="required">
+                                        
+                              </select>
                             </div>
                           </div>
                           <div class="form-group required">
                             <label class="col-lg-4 text-right control-label font-bold">Tipo de Movimiento</label>
                             <div class="col-lg-4">
-                            <select class="chosen-select form-control" name="bank" required="required">
+                            <select class="chosen-select form-control" name="type_mov" required="required">
                                         <option value="">Seleccionar</option>
                                         <?PHP
-                                        $arrKindMeetings = GetRecords("Select * from bank where stat = 1");
+                                        $arrKindMeetings = GetRecords("Select * from type_mov where stat = 1");
                                         foreach ($arrKindMeetings as $key => $value) {
                                         $kinId = $value['id'];
                                         $kinDesc = $value['name'];
@@ -130,7 +122,22 @@
                           <div class="form-group required">
                             <label class="col-lg-4 text-right control-label font-bold">Monto</label>
                             <div class="col-lg-4">
-                              <input type="text" class="form-control" placeholder="Monto" name="mount" data-required="true">
+                              <input type="number" step="any" class="form-control" placeholder="Monto" name="mount" data-required="true">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-lg-4 text-right control-label font-bold">Imagen</label>
+                            <div class="col-lg-4">
+                                <div style="width:204px;
+                                            height:154px;
+                                            background-color: #cccccc;
+                                            border: solid 2px gray;
+                                            margin: 5px;">
+                                    <img id="img" src="#" style='width:200px; height:150px;display: none;' alt="your image" />
+                                </div>
+                                <label class="btn yellow btn-default">
+                                  Cargar Foto <input type="file" accept="image/*" name="photo" style="display: none;" onchange="readURL(this);">
+                                </label>
                             </div>
                           </div>
                           <div class="form-group required">
@@ -141,7 +148,7 @@
                           </div>
                         </div>
                         <footer class="panel-footer text-right bg-light lter">
-                          <button type="submit" name="submitAcount" class="btn btn-primary btn-s-xs">Registrar</button>
+                          <button type="submit" name="submitMov" class="btn btn-primary btn-s-xs">Registrar</button>
                         </footer>
                       </section>
                     </form>
@@ -150,6 +157,30 @@
             </section>
         </section>
     </section>
+    <script>
+        $(document).ready(function(){
+            $("#banco").on('change', function () {
+                $("#banco option:selected").each(function () {
+                    elegido=$(this).val();
+                    $.post("carga_dependiente.php", { elegido: elegido }, function(data){
+                        $("#cuenta").html(data);
+                    });			
+                });
+            });
+          });
+    </script>
+    <script type="text/javascript">
+      function readURL(input) {
+
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                  $('#img').show().attr('src', e.target.result);
+              }
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+    </script>
 <?php
 	include("footer.php");
 ?>
