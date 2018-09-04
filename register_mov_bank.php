@@ -1,12 +1,11 @@
 <?php
     ob_start();
     session_start();
-    $mantenimientoclass="class='active'";
-    $addAcount="class='active'";
+    $bankclass="class='active'";
+    $addMov="class='active'";
 
     include("include/config.php");
     include("include/defs.php");
-
     include("header.php");
 
     if(!isset($_SESSION['USER_ID']) || $_SESSION['USER_ROLE'] != 1)
@@ -17,7 +16,7 @@
      $message="";
 
      if (isset($_POST['bank_name'])) {
-       
+
       $arrVal = array(
         "name" => $_POST['bank_name'],
         "id_user_reg" => $_SESSION['USER_ID'],
@@ -48,6 +47,21 @@
                          );
 
           $nId = InsertRec("mov_bank", $arrVal);
+
+          if(isset($_FILES['photo']) && $_FILES['photo']['tmp_name'] != "")
+          {
+              $target_dir = "mov_image/";
+              $target_file = $target_dir . basename($_FILES["photo"]["name"]);
+              $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+              $filename = $target_dir . $nId.".".$imageFileType;
+              $filenameThumb = $target_dir . $nId."_thumb.".$imageFileType;
+              if (move_uploaded_file($_FILES["photo"]["tmp_name"], $filename))
+              {
+                  makeThumbnailsWithGivenWidthHeight($target_dir, $imageFileType, $nId, 600, 400);
+
+                  UpdateRec("mov_bank", "id = ".$nId, array("image" => $filenameThumb));
+              }
+          }
 
           $message = '<div class="alert alert-success">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -97,7 +111,7 @@
                             <label class="col-lg-4 text-right control-label font-bold">Seleccionar Cuenta</label>
                             <div class="col-lg-4">
                               <select id="cuenta" class="form-control" name="acount_bank" required="required">
-                                        
+
                               </select>
                             </div>
                           </div>
@@ -113,9 +127,7 @@
                                         $kinDesc = $value['name'];
                                         ?>
                                         <option value="<?php echo $kinId?>"><?php echo $kinDesc?></option>
-                                        <?php
-                                        }
-                                        ?>
+                                        <?php } ?>
                                 </select>
                             </div>
                           </div>
@@ -164,7 +176,7 @@
                     elegido=$(this).val();
                     $.post("carga_dependiente.php", { elegido: elegido }, function(data){
                         $("#cuenta").html(data);
-                    });			
+                    });
                 });
             });
           });

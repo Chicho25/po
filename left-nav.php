@@ -114,7 +114,7 @@
                         </li>
                       </ul>
                     </li>
-                    <li <?php if(isset($pay)) echo $pay;?>>
+                    <li <?php if(isset($bankclass)) echo $bankclass;?>>
                       <a href="#" class="auto">
                         <span class="pull-right text-muted">
                           <i class="i i-circle-sm-o text"></i>
@@ -124,15 +124,15 @@
                         <span>Banca</span>
                       </a>
                       <ul class="nav dker">
-                        <li <?php if(isset($registerPay)) echo $registerPay;?>>
+                        <li <?php if(isset($addMov)) echo $addMov;?>>
                           <a href="register_mov_bank.php"><i class="i i-dot"></i>
                             <span>Registro Movimiento</span>
                           </a>
                         </li>
                       </ul>
                       <ul class="nav dker">
-                        <li <?php if(isset($registerPay)) echo $registerPay;?>>
-                          <a href="#"><i class="i i-dot"></i>
+                        <li <?php if(isset($viewMov)) echo $viewMov;?>>
+                          <a href="mov_view.php"><i class="i i-dot"></i>
                             <span>Ver Movimientos</span>
                           </a>
                         </li>
