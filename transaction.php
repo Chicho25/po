@@ -62,10 +62,8 @@
                           <div class="form-group required">
                             <label class="col-lg-4 text-right control-label font-bold">Precio del dolar</label>
                             <div class="col-lg-4">
-                              <?php
-                              $arrUser = GetRecords("SELECT * from value_dollar order by id desc limit 1");
-                              $value = $arrUser[0]['value_dollar'];?>
-                              <input type="text" readonly class="form-control" value="<?php echo $value;?>" placeholder="Monto Recibido" name="price_dollar" data-required="true">
+                             
+                              <input type="text" readonly class="form-control" value="" placeholder="Monto Recibido" name="price_dollar" data-required="true">
                             </div>
                           </div>
                           <div class="form-group required">

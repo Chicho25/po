@@ -11,10 +11,13 @@
                                      mb.image,
                                      mb.id_user_reg,
                                      mb.data_time,
-                                     tm.id as type_mov
+                                     tm.id as type_mov, 
+                                     u.name, 
+                                     u.last_name
                                    from mov_bank mb inner join bank b on mb.id_bank = b.id
                                                     inner join acount_bank ab on mb.id_acount = ab.id
                                                     inner join type_mov tm on mb.type_mov = tm.id
+                                                    inner join users u on mb.id_user_reg = u.id
                                    WHERE
                                    mb.id = '".$_GET['id']."'");?>
 
@@ -53,10 +56,10 @@
                         <select class="chosen-select form-control" name="id_bank">
                             <option value="">Seleccionar</option>
                             <?PHP
-                            $arrKindMeetings = GetRecords("Select * from bank where id = '".$edit_mov_bank[0]['id_acount']."'");
+                            $arrKindMeetings = GetRecords("Select * from acount_bank where id = '".$edit_mov_bank[0]['id_acount']."'");
                             foreach ($arrKindMeetings as $key => $value) {
                                 $kinId = $value['id'];
-                                $kinDesc = $value['name'];
+                                $kinDesc = $value['number_acount'];
                                 $id_bank_get = $edit_mov_bank[0]['id_acount'];
                             ?>
                             <option value="<?php echo $kinId?>" <?php if($id_bank_get == $kinId){ echo 'selected';} ?> ><?php echo $kinDesc?></option>
@@ -106,7 +109,7 @@
                 <div class="form-group">
                     <label class="col-lg-3 text-right control-label">Usuario</label>
                     <div class="col-lg-7">
-                        <input class="form-control" name="descriptions" value="<?php echo $edit_mov_bank[0]['id_user_reg']; ?>">
+                        <input class="form-control" name="descriptions" value="<?php echo $edit_mov_bank[0]['name'].' '.$edit_mov_bank[0]['last_name']; ?>">
                     </div>
                 </div>
                 <div class="form-group">

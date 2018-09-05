@@ -165,7 +165,21 @@
                       <ul class="nav dker">
                         <li <?php if(isset($registerPay)) echo $registerPay;?>>
                           <a href="#"><i class="i i-dot"></i>
-                            <span>Pago x Usuario</span>
+                            <span>Pago a Usuario</span>
+                          </a>
+                        </li>
+                      </ul>
+                      <ul class="nav dker">
+                        <li <?php if(isset($registerPay)) echo $registerPay;?>>
+                          <a href="#"><i class="i i-dot"></i>
+                            <span>Pago a Central</span>
+                          </a>
+                        </li>
+                      </ul>
+                      <ul class="nav dker">
+                        <li <?php if(isset($registerPay)) echo $registerPay;?>>
+                          <a href="#"><i class="i i-dot"></i>
+                            <span>Pago a Clientes</span>
                           </a>
                         </li>
                       </ul>

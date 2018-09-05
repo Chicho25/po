@@ -31,6 +31,11 @@
 <body class="" >
   <section class="vbox">
     <header class="bg-white header header-md navbar navbar-fixed-top-xs box-shadow">
+      <span style="position:absolute; right: 0px; margin: 10px;">
+        <a href="modal-my-profile.php" title="Tasa diaria" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="fa fa-user"></i></a>
+        <a href="modal-taza-diaria.php" title="Tasa diaria" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="fa fa-dollar"></i></a>
+        <a href="modal-stat-bank.php" title="Bancos" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="fa fa-bank"></i></a>
+      </span>
       <div class="navbar-header aside-md dk">
         <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen,open" data-target="#nav,html">
           <i class="fa fa-bars"></i>
@@ -39,9 +44,10 @@
           <img src="images/logo.png" class="m-r-sm" alt="scale">
           <span class="hidden-nav-xs">Planet Online</span>
         </a>
-        <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user">
+
+        <!--<a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user">
           <i class="fa fa-cog"></i>
-        </a>
+        </a>-->
       </div>
       <?php /* Bloqueo de pagina de carga */ ?>
       <style media="screen">
