@@ -16,7 +16,7 @@
      }
      $message="";
 
-    if(isset($_POST['submitUser']))
+    if(isset($_POST['submitCustomer']))
      {
         $FIRSTNAME = $_POST['name'];
         $LASTNAME = $_POST['lastname'];
@@ -68,6 +68,20 @@
                   }
                 }
               }
+
+              $arrVal = array(
+                "id_customer" => $nId,
+                "id_bank_customer" => $_POST['id_bank_customer'],
+                "number_acount" => $_POST['number_acount'],
+                "descriptions" => $_POST['descriptions'],
+                "type_acount" => $_POST['type_acount'],
+                "id_user_reg" => $_SESSION['USER_ID'],
+                "data_time" => date("Y-m-d H:i:s"), 
+                "stat" => 1
+               );
+
+               $nId = InsertRec("acount_customer", $arrVal);
+
           }
      }
 ?>
@@ -113,9 +127,15 @@
                             </div>
                           </div>
                           <div class="form-group required">
+                            <label class="col-lg-4 text-right control-label font-bold">Cedula</label>
+                            <div class="col-lg-4">
+                              <input type="text" class="form-control" placeholder="Cedula" name="identifications" data-required="true">
+                            </div>
+                          </div>
+                          <div class="form-group required">
                               <label class="col-lg-4 text-right control-label"><b>País</b></label>
                               <div class="col-lg-4">
-                                  <select class="chosen-select form-control" name="location" required="required"  onChange="getOptionsData(this.value, 'regionbycountry', 'region');">
+                                  <select class="chosen-select form-control" name="location" required="required">
                                     <option value="">Seleccionar</option>
                                     <?PHP
                                         $arrKindMeetings = GetRecords("Select * from country where stat = 1");
@@ -145,9 +165,50 @@
                                 </label>
                             </div>
                           </div>
+                          <hr>
+                          <div class="form-group required">
+                              <label class="col-lg-4 text-right control-label"><b>Banco</b></label>
+                              <div class="col-lg-4">
+                                  <select class="chosen-select form-control" name="id_bank_customer" required="required">
+                                    <option value="">Seleccionar</option>
+                                    <?PHP
+                                        $arrKindMeetings = GetRecords("Select * from bank_customer where stat = 1");
+                                        foreach ($arrKindMeetings as $key => $value) {
+                                          $kinId = $value['id'];
+                                          $kinDesc = $value['name'];
+                                        ?>
+                                        <option value="<?php echo $kinId?>"><?php echo $kinDesc?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="form-group required">
+                              <label class="col-lg-4 text-right control-label"><b>Tipo de cuenta</b></label>
+                              <div class="col-lg-4">
+                                  <select class="chosen-select form-control" name="type_acount" required="required">
+                                    <option value="">Seleccionar</option>
+                                    <option value="1">Ahorro</option>
+                                    <option value="2">Corriente</option>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-lg-4 text-right control-label font-bold">Numero de cuenta</label>
+                            <div class="col-lg-4">
+                              <input type="text" class="form-control" placeholder="Cedula" name="number_acount" data-required="true">
+                            </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-lg-4 text-right control-label font-bold">Descripcion de la cuenta</label>
+                            <div class="col-lg-4">
+                              <textarea class="form-control" placeholder="Descripcion de la cuenta" name="descriptions" data-required="true"></textarea>
+                            </div>
+                          </div>
                         </div>
                         <footer class="panel-footer text-right bg-light lter">
-                          <button type="submit" name="submitUser" class="btn btn-primary btn-s-xs">Registrar Cliente</button>
+                          <button type="submit" name="submitCustomer" class="btn btn-primary btn-s-xs">Registrar Cliente</button>
                         </footer>
                       </section>
                     </form>

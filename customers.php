@@ -15,6 +15,28 @@
           exit;
      }
 
+     if (isset($_POST['submitCreateBank'])) {
+
+      $arrVal = array(
+        "id_customer" => $_POST['id_customer'],
+        "id_bank_customer" => $_POST['id_bank_customer'],
+        "number_acount" => $_POST['number_acount'],
+        "descriptions" => $_POST['descriptions'],
+        "type_acount" => $_POST['type_acount'],
+        "id_user_reg" => $_SESSION['USER_ID'],
+        "data_time" => date("Y-m-d H:i:s"), 
+        "stat" => 1
+       );
+
+       $nId = InsertRec("acount_customer", $arrVal);
+
+       $message = '<div class="alert alert-success">
+       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+         <strong>Cuenta Creada</strong>
+       </div>';
+
+     }
+
      if(isset($_POST['submitUsuario'])){
 
        if(isset($_POST['stat'])){ $stat = 1; }else{ $stat = 0; }
@@ -148,7 +170,9 @@
                               <td class="tbdata"> <?php echo $value['LOCATION']?> </td>
                               <td class="tbdata"> <?php echo $status?> </td>
                               <td>
-                                <a href="modal-customer.php?id=<?php echo $value['id']?>" title="Agregar una nota" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="fa fa-edit (alias)"></i></a>
+                                <a href="modal-customer.php?id=<?php echo $value['id']?>" title="Editar Cliente" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="fa fa-edit (alias)"></i></a>
+                                <a href="modal-bank-customer.php?id=<?php echo $value['id']?>" title="Ver Bancos" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="fa fa-bank"></i></a>
+                                <a href="modal-bank-customer-add.php?id=<?php echo $value['id']?>" title="Agregar Bancos" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="fa fa-plus"></i></a>
                               </td>
                           </tr>
                           <?php

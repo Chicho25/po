@@ -83,6 +83,11 @@
                       </a>
                       <ul class="nav dker">
                         <li <?php if(isset($classcountry)) echo $classcountry;?>>
+                          <a href="update_cost_currently.php"><i class="i i-dot"></i>
+                            <span>Taza Diaria</span>
+                          </a>
+                        </li>
+                        <li <?php if(isset($classcountry)) echo $classcountry;?>>
                           <a href="add_country.php"><i class="i i-dot"></i>
                             <span>Registrar Pais</span>
                           </a>
