@@ -182,8 +182,8 @@
                         </li>
                       </ul>
                       <ul class="nav dker">
-                        <li <?php if(isset($registerPay)) echo $registerPay;?>>
-                          <a href="#"><i class="i i-dot"></i>
+                        <li <?php if(isset($registerPayCus)) echo $registerPayCus;?>>
+                          <a href="pay_customers.php"><i class="i i-dot"></i>
                             <span>Pago a Clientes</span>
                           </a>
                         </li>

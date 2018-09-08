@@ -37,6 +37,19 @@
 
      }
 
+     if(isset($_POST['eliminar'])){
+
+      $arrBankCus = array("stat" => 2);
+
+      UpdateRec("acount_customer", "id = ".$_POST['id_customer_acount'], $arrBankCus);
+
+      $message = '<div class="alert alert-danger">
+                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Cuenta eliminada</strong>
+                  </div>';
+
+     }
+
      if(isset($_POST['submitUsuario'])){
 
        if(isset($_POST['stat'])){ $stat = 1; }else{ $stat = 0; }
@@ -54,9 +67,6 @@
                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                      <strong>Cliente Modificado</strong>
                    </div>';
-
-
-
      }
 
     $where = "where (1=1)";

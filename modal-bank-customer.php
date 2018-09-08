@@ -11,7 +11,9 @@
                             ac.type_acount 
                            FROM acount_customer ac INNER JOIN bank_customer bc on ac.id_bank_customer = bc.id
                            WHERE 
-                           ac.id_customer = '".$_GET['id']."'"); 
+                           ac.id_customer = '".$_GET['id']."'
+                           and 
+                           ac.stat = 1"); 
 
 ?>
 
@@ -48,8 +50,11 @@
                         <td class="tbdata"> <?php if($value['type_acount']==1){ echo 'Ahorro'; }else{ echo 'Corriente'; }?> </td>
                         <td class="tbdata"> <?php echo $value['descriptions']?> </td>
                         <td>
-                            <a href="edit-bank.php?id=<?php echo $value['id']?>" data-dismiss="modal" data-toggle="ajaxModal"  title="Editar" class="btn btn-sm btn-icon btn-primary"><i class="glyphicon glyphicon-edit"></i></a>
-                            <a href="delete-bank.php" title="Eliminar" class="btn btn-sm btn-icon btn-danger"><i class="glyphicon glyphicon-trash"></i></a>
+                            <!--<a href="edit-bank.php?id=<?php echo $value['id']?>" data-dismiss="modal" data-toggle="ajaxModal"  title="Editar" class="btn btn-sm btn-icon btn-primary"><i class="glyphicon glyphicon-edit"></i></a>-->
+                            <form action="" method="post">
+                                <button name="eliminar" class="btn btn-sm btn-icon btn-danger"><i class="glyphicon glyphicon-trash"></i></button>
+                                <input type="hidden" value="<?php echo $value['id']?>" name="id_customer_acount">
+                            </form>
                         </td>
                     </tr>
                     <?php
