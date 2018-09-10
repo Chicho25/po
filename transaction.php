@@ -62,7 +62,7 @@
                           <div class="form-group required">
                             <label class="col-lg-4 text-right control-label font-bold">Tipo de Transacción</label>
                             <div class="col-lg-4">
-                              <select class="chosen-select form-control" name="type_transaction" required="required"  onChange="getOptionsData(this.value, 'regionbycountry', 'region');">
+                              <select class="chosen-select form-control" name="type_transaction" required="required" disabled>
                                 <option value="">Seleccionar</option>
                                 <?PHP
                                     $arrKindMeetings = GetRecords("Select * from type_transaction where stat = 1");
@@ -70,11 +70,12 @@
                                       $kinId = $value['id'];
                                       $kinDesc = $value['name'];
                                     ?>
-                                    <option value="<?php echo $kinId?>"><?php echo $kinDesc?></option>
+                                    <option value="<?php echo $kinId?>" <?php if ($kinId ==1) { echo 'selected'; } ?>><?php echo $kinDesc?></option>
                                     <?php
                                     }
                                     ?>
                               </select>
+                              <input type="hidden" name="type_transaction" value="1" >
                             </div>
                           </div>
                           <div class="form-group required">

@@ -2,11 +2,10 @@
     ob_start();
     session_start();
     $pay="class='active'";
-    $registerPayCus="class='active'";
+    $editpay="class='active'";
 
     include("include/config.php");
     include("include/defs.php");
-
     include("header.php");
 
     if(!isset($_SESSION['USER_ID']) || $_SESSION['USER_ROLE'] != 1)
@@ -15,95 +14,120 @@
           exit;
      }
 
-
-     if(isset($_POST['deleteDetail'])){
-
-       $monto_a_sumar = $_POST["remaining"] + $_POST['amount'];
-
-       $arrTrans = array("remaining"=>$monto_a_sumar);
-
-       UpdateRec("transaction", "id = ".$_POST['id_transaction'], $arrTrans);
-
-       MySQLQuery("DELETE FROM main_pay WHERE id = '".$_POST['id_pay']."'");
-
-       $message = '<div class="alert alert-success">
-                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                     <strong>Detalle de pago Borrado</strong>
-                   </div>';
-
-     }
-
-     if(isset($_POST['submitTransaction'])) {
-
-       if(isset($_POST['stat'])){
-         $stat = $_POST['stat'];
-       }else{
-         $stat = $_POST['stat_hidden'];
-       }
-
-       $arrTrans = array("id_customer"=>$_POST['customer'],
-                         "amount"=>$_POST['get_amount'],
-                         "amount_transfer"=>$_POST['amount_transfer'],
-                         "remaining"=>$_POST['amount_transfer'],
-                         "messaje"=>$_POST['messaje'],
-                         "stat"=>$stat);
-
-        UpdateRec("transaction", "id = ".$_POST['id'], $arrTrans);
-
-        $message = '<div class="alert alert-success">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                      <strong>Transacciòn Actualizada</strong>
-                    </div>';
-
-     }
-
      if(isset($_POST['submitPay'])){
 
-       $arrPay = array("id_transaction"=>$_POST['id_transaction'],
-                        "id_user"=>$_SESSION['USER_ID'],
-                        "amount_paid"=>$_POST['amount_transfer'],
-                        "messaje"=>$_POST['messaje'],
-                        "stat"=>1,
-                        "id_bank"=>$_POST['bank']);
+        $obtener_banco = GetRecords("select id_bank_customer from acount_customer where id = '".$_POST['id_count_bank']."'");
 
-       $nId = InsertRec("main_pay", $arrPay);
+        $array_pago = array("id_transaction	"=> $_POST['id_transaction'], 
+                            "id_user"=>$_POST['id_user'], 
+                            "amount_paid"=>$_POST['amount_paid'],
+                            "messaje"=>$_POST['messaje'],
+                            "stat"=>1, 
+                            "id_bank"=>$obtener_banco[0]['id_bank_customer'],
+                            "id_user_reg"=>$_SESSION['USER_ID'],
+                            "id_count_bank"=>$_POST['id_count_bank'], 
+                            "time_data" => date("Y-m-d H:i:s"), 
+                            "id_customer"=>$_POST['id_customer']);
+                            
+        $nId = InsertRec("main_pay", $array_pago);
 
-       if($nId > 0)
-       {
+        /* registro del movimiento bancario */ 
 
-           if(isset($_FILES['photo']) && $_FILES['photo']['tmp_name'] != "")
-           {
-               $target_dir = "attached_invoice/";
-               $target_file = $target_dir . basename($_FILES["photo"]["name"]);
-               $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-               $filename = $target_dir . $nId.".".$imageFileType;
-               $filenameThumb = $target_dir . $nId."_thumb.".$imageFileType;
-               if (move_uploaded_file($_FILES["photo"]["tmp_name"], $filename))
-               {
-                   /*makeThumbnailsWithGivenWidthHeight($target_dir, $imageFileType, $nId, 100, 100);*/
+        $obtener_banco_mov = GetRecords("select 
+                                          id_bank 
+                                         from 
+                                          acount_bank 
+                                         where 
+                                          id = '".$_POST['mov_bank']."'");
 
-                   UpdateRec("main_pay", "id = ".$nId, array("attached" => $filenameThumb));
-               }
-           }
+        $obtener_precio_venta_compra = GetRecords("select 
+                                                    price_for_dollar, 
+                                                    price_sales
+                                                    from 
+                                                    mov_bank
+                                                    where 
+                                                    id = (select 
+                                                            max(id)
+                                                            from 
+                                                            mov_bank
+                                                            where 
+                                                            type_mov = 2)");
+        
+        $array_mov_bank = array("id_bank"=>$obtener_banco_mov[0]['id_bank'],
+                                "id_acount"=>$_POST['mov_bank'],
+                                "type_mov"=>1,
+                                "amount"=>$_POST['amount_paid'],
+                                "descriptions"=>$_POST['messaje'],
+                                "stat"=>1,
+                                "id_user_reg"=>$_SESSION['USER_ID'],
+                                "data_time"=>date("Y-m-d H:i:s"), 
+                                "price_for_dollar"=>$obtener_precio_venta_compra[0]['price_for_dollar'],
+                                "price_sales"=>$obtener_precio_venta_compra[0]['price_sales'],
+                                "id_transaction"=>$_POST['id_transaction'],
+                                "id_transaction_child"=>$nId,
+                                "id_user"=>$_POST['id_user'],
+                                "id_customer"=>$_POST['id_customer']);
 
-       $amount_remaining = $_POST['remaining'] - $_POST['amount_transfer'];
-         $stat = 2;
-       if($amount_remaining == 0){
-         $stat = 3;
-       }
+        $nId_mov = InsertRec("mov_bank", $array_mov_bank);
+                            
+        if($nId > 0)
+        {
 
-       UpdateRec("transaction", "id = ".$_POST['id_transaction'], array("remaining" => $amount_remaining,
-                                                                        "stat" => $stat));
+            if(isset($_FILES['photo']) && $_FILES['photo']['tmp_name'] != "")
+            {
+                $target_dir = "po_bauches/";
+                $target_file = $target_dir . basename($_FILES["photo"]["name"]);
+                $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+                $filename = $target_dir . $nId.".".$imageFileType;
+                $filenameThumb = $target_dir . $nId."_thumb.".$imageFileType;
+                if (move_uploaded_file($_FILES["photo"]["tmp_name"], $filename))
+                {
+                    makeThumbnailsWithGivenWidthHeight($target_dir, $imageFileType, $nId, 100, 100);
 
-       $message = '<div class="alert alert-success">
-                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                     <strong>Pago Registrado</strong>
-                   </div>';
+                    UpdateRec("main_pay", "id = ".$nId, array("attached" => $filenameThumb));
+                    UpdateRec("mov_bank", "id = ".$nId_mov, array("image" => $filenameThumb));
+                }
+            }
+        }
 
-          }
+     // actualizar monto
+    $pagado = GetRecords("select paidout from transaction where id = '".$_POST['id_transaction']."'");
 
-     }
+    $monto_total_actual = $pagado[0]['paidout'] + $_POST['amount_paid']; 
 
+    $arrTransactions = array("paidout"=>$monto_total_actual);
+
+     UpdateRec("transaction", "id = ".$_POST['id_transaction'], $arrTransactions);
+
+    // status del pago transaccion ect
+
+    $pagado = GetRecords("select paidout, amount_transfer from transaction where id = '".$_POST['id_transaction']."'");
+
+    if($pagado[0]['paidout'] == $pagado[0]['amount_transfer']){
+        
+        $arrTransactionsStatus = array("stat"=>3);
+
+        UpdateRec("transaction", "id = ".$_POST['id_transaction'], $arrTransactionsStatus);
+
+        $message = '<div class="alert alert-success">
+                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Transaccion Pagada en su totalidad</strong>
+                  </div>';
+    
+    }else{
+
+        $arrTransactionsStatus = array("stat"=>2);
+
+        UpdateRec("transaction", "id = ".$_POST['id_transaction'], $arrTransactionsStatus);
+
+        $message = '<div class="alert alert-success">
+                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Transaccion Abonada</strong>
+                  </div>';
+
+                }
+
+            }
     $where = "where (1=1)";
 
      if(isset($_POST['name']) && $_POST['name'] != "")
@@ -201,7 +225,6 @@
                                   foreach ($arrKindMeetings as $key => $value) {
                                     $kinId = $value['id'];
                                     $kinDesc = $value['name'];
-
                                   ?>
                                   <option value="<?php echo $kinId?>" <?php if(isset($master_stat) && $master_stat==$kinId){ echo "selected";} ?>><?php echo $kinDesc?></option>
                                   <?php
@@ -226,7 +249,7 @@
                               <th>ESTADO</th>
                               <th>PAGAR</th>
                               <th>VER PAGOS</th>
-                              <th>EDITAR</th>
+                              <th>DETALLE</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -244,16 +267,13 @@
                               <td class="tbdata"> <?php echo number_format($value['paidout'], 2, ',', '.')?> Bs</td>
                               <td class="tbdata"> <?php echo $value['transaction_status']?> </td>
                               <td>
-                                <?php if($value['stat']==3 || $value['stat']==4){
-                                      }else{ ?>
-                                <a href="modal-pay.php?id_transaction=<?php echo $value['id']?>&remaining=<?php echo $value['remaining']?>" title="Agregar una nota" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="fa fa-usd"></i></a>
-                              <?php } ?>
+                                <a href="modal-pay.php?id=<?php echo $value['id']?>" title="Agregar una nota" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="fa fa-dollar"></i></a>
                               </td>
                               <td>
-                                <a href="modal-detail-pay.php?id=<?php echo $value['id']?>&remaining=<?php echo $value['remaining']?>" title="Agregar una nota" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                <a href="modal-detail-pay.php?id=<?php echo $value['id']?>" title="Agregar una nota" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="glyphicon glyphicon-eye-open"></i></a>
                               </td>
                               <td>
-                                <a href="modal-edit-transaction.php?id=<?php echo $value['id']?>" title="Agregar una nota" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="fa fa-edit (alias)"></i></a>
+                                <a href="modal-edit-transaction.php?id=<?php echo $value['id']?>" title="Eliminar" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="glyphicon glyphicon-edit"></i></a>
                               </td>
                           </tr>
                           <?php

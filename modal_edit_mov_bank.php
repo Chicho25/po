@@ -13,7 +13,10 @@
                                      mb.data_time,
                                      tm.id as type_mov, 
                                      u.name, 
-                                     u.last_name
+                                     u.last_name, 
+                                     mb.amount_sales, 
+                                     mb.price_for_dollar, 
+                                     mb.price_sales
                                    from mov_bank mb inner join bank b on mb.id_bank = b.id
                                                     inner join acount_bank ab on mb.id_acount = ab.id
                                                     inner join type_mov tm on mb.type_mov = tm.id
@@ -91,7 +94,25 @@
                 <div class="form-group">
                     <label class="col-lg-3 text-right control-label">Monto</label>
                     <div class="col-lg-7">
-                        <input class="form-control" step="any" name="amount" value="<?php echo $edit_mov_bank[0]['amount']; ?>">
+                        <input id="monto" class="form-control" step="any" name="amount" value="<?php echo $edit_mov_bank[0]['amount']; ?>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 text-right control-label">Cantidad Vendida $</label>
+                    <div class="col-lg-7">
+                        <input id="cantidad_vendida" class="form-control" step="any" name="amount_sales" value="<?php echo $edit_mov_bank[0]['amount_sales']; ?>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 text-right control-label">Precio Por Unidad de Compra BsS</label>
+                    <div class="col-lg-7">
+                        <input id="precio_dolar" class="form-control" onkeyup="total_bolivares()" step="any" name="price_for_dollar" value="<?php echo $edit_mov_bank[0]['price_for_dollar']; ?>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 text-right control-label">Precio Por Unidad de Venta BsS</label>
+                    <div class="col-lg-7">
+                        <input class="form-control" id="precio_venta" onkeyup="total_bolivares()" step="any" name="precio_venta" value="<?php echo $edit_mov_bank[0]['price_sales']; ?>">
                     </div>
                 </div>
                 <div class="form-group">
@@ -136,3 +157,10 @@
     </form>
   </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
+<script type="text/javascript">
+      function total_bolivares(){
+        var cantidad_vemdida = document.querySelector("#cantidad_vendida").value;
+        var precio_dolar = document.querySelector("#precio_dolar").value;
+        document.querySelector("#monto").value = cantidad_vemdida * precio_dolar;
+      }
+</script>

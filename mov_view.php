@@ -19,17 +19,17 @@
 
        if(isset($_POST['stat'])){ $stat = 1; }else{ $stat = 0; }
 
-       $arrUser = array("stat"=>$stat,
+       /*$arrUser = array("stat"=>$stat,
                         "number_acount"=>$_POST['acount_bank'],
                         "id_bank"=>$_POST['id_bank'],
                         "descriptions" => $_POST['descriptions']
                         );
 
        UpdateRec("acount_bank", "id = ".$_POST['id_count_bank'], $arrUser);
-
+                        */
        $message = '<div class="alert alert-success">
                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                     <strong>Cuenta Modificada</strong>
+                     <strong>Moviminedo bancario Modificado</strong>
                    </div>';
      }
 

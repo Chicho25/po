@@ -43,7 +43,10 @@
                           "descriptions" => $_POST['descriptions'],
                           "stat" => 1,
                           "id_user_reg" => $_SESSION['USER_ID'],
-                          "data_time" => date("Y-m-d H:i:s")
+                          "data_time" => date("Y-m-d H:i:s"), 
+                          "amount_sales" => $_POST['amount_sales'], 
+                          "price_for_dollar" => $_POST['price_for_dollar'], 
+                          "price_sales" => $_POST['price_sales']
                          );
 
           $nId = InsertRec("mov_bank", $arrVal);
@@ -134,7 +137,25 @@
                           <div class="form-group required">
                             <label class="col-lg-4 text-right control-label font-bold">Monto</label>
                             <div class="col-lg-4">
-                              <input type="number" step="any" class="form-control" placeholder="Monto" name="mount" data-required="true">
+                              <input type="number" step="any" id="monto" readonly class="form-control" placeholder="Monto" name="mount" data-required="true">
+                            </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-lg-4 text-right control-label font-bold">Cantidad Vendida $</label>
+                            <div class="col-lg-4">
+                              <input type="number" onkeyup="total_bolivares()" step="any" id="cantidad_vendida" class="form-control" placeholder="Cantidad Vendida" name="amount_sales" data-required="true">
+                            </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-lg-4 text-right control-label font-bold">Precio Por Unidad de Compra BsS</label>
+                            <div class="col-lg-4">
+                              <input type="text" onkeyup="total_bolivares()" class="form-control" id="precio_dolar" placeholder="Precio Por Unidad de Compra" name="price_for_dollar" data-required="true">
+                            </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-lg-4 text-right control-label font-bold">Precio Por Unidad de Venta BsS</label>
+                            <div class="col-lg-4">
+                              <input type="number" step="any" class="form-control" id="precio_venta" placeholder="Precio Por Unidad de Venta" name="price_sales" data-required="true">
                             </div>
                           </div>
                           <div class="form-group">
@@ -169,6 +190,13 @@
             </section>
         </section>
     </section>
+    <script type="text/javascript">
+      function total_bolivares(){
+        var cantidad_vemdida = document.querySelector("#cantidad_vendida").value;
+        var precio_dolar = document.querySelector("#precio_dolar").value;
+        document.querySelector("#monto").value = cantidad_vemdida * precio_dolar;
+      }
+    </script>
     <script>
         $(document).ready(function(){
             $("#banco").on('change', function () {
