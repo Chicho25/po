@@ -1,0 +1,6 @@
+[10-Sep-2018 16:53:07 America/Panama] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /home/ombrb56i8sb8/public_html/tayron/include/defs.php:15
+Stack trace:
+#0 /home/ombrb56i8sb8/public_html/tayron/include/defs.php(4298): MySQLConnect()
+#1 /home/ombrb56i8sb8/public_html/tayron/index.php(5): include('/home/ombrb56i8...')
+#2 {main}
+  thrown in /home/ombrb56i8sb8/public_html/tayron/include/defs.php on line 15
