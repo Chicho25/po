@@ -43,7 +43,7 @@
         $usertype = $_POST['usertype'];
         $email = $_POST['email'];
         $location = $_POST['location'];
-        $percentage = $_POST['percentage'];
+        $credit = $_POST['credit'];
         $referred = $_POST['referred'];
         $ifUserExist = RecCount("users", "user = '".$USERNAME."' or email = '".$email."'");
         if($ifUserExist > 0)
@@ -65,7 +65,7 @@
                           "stat" => 1,
                           "location" => $location, 
                           "id_user_reg" => $_SESSION['USER_ID'],
-                          "percentage" => $percentage, 
+                          "credit" => $credit, 
                           "referred" => $referred
                          );
 
@@ -177,9 +177,9 @@
                               </div>
                           </div>
                           <div class="form-group" id="porcentaje_tag" style="display:none">
-                            <label class="col-lg-4 text-right control-label font-bold">Porcentaje de ganancia</label>
+                            <label class="col-lg-4 text-right control-label font-bold">Credito</label>
                             <div class="col-lg-4">
-                              <input type="text" class="form-control" placeholder="Porcentaje de Ganancia para este usuario" name="percentage" autocomplete="off">
+                              <input type="text" class="form-control" placeholder="Credito para este usuario" name="credit" autocomplete="off">
                             </div>
                           </div>
                           <div class="form-group" id="porcentaje_tag_ref" style="display:none">

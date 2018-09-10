@@ -15,7 +15,7 @@
     $stat = $arrUser[0]['stat'];
     $create_date = $arrUser[0]['create_date'];
     $email = $arrUser[0]['email'];
-    $percentage = $arrUser[0]['percentage'];
+    $credit = $arrUser[0]['credit'];
     $referred = $arrUser[0]['referred'];
 
        }
@@ -88,9 +88,9 @@
               </div>
             </div>
             <div class="form-group required">
-              <label class="col-lg-3 text-right control-label">Porcentaje de Ganancia</label>
+              <label class="col-lg-3 text-right control-label">Credito</label>
               <div class="col-lg-7">
-                <input type="text" class="form-control" name="percentage" value="<?php echo $percentage; ?>">
+                <input type="text" class="form-control" name="credit" value="<?php echo $credit; ?>">
               </div>
             </div>
             <div class="form-group">

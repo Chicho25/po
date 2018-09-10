@@ -27,7 +27,7 @@
                         "stat"=>$stat,
                         "location"=>$_POST['location_edit'],
                         "email"=>$_POST['email'], 
-                        "percentage"=>$_POST['percentage'], 
+                        "credit"=>$_POST['credit'], 
                         "referred"=>$_POST['referred']);
 
        UpdateRec("users", "id = ".$_POST['id'], $arrUser);
@@ -132,7 +132,7 @@
                               <th>EMAIL</th>
                               <th>TIPO DE USUARIO</th>
                               <th>LOCALIDAD</th>
-                              <th>PORCENTAJE</th>
+                              <th>CREDITO</th>
                               <th>ESTATUS</th>
                               <th>EDITAR</th>
                             </tr>
@@ -150,7 +150,7 @@
                               <td class="tbdata"> <?php echo $value['email']?> </td>
                               <td class="tbdata"> <?php echo $value['name_type_user']?> </td>
                               <td class="tbdata"> <?php echo $value['LOCATION']?> </td>
-                              <td class="tbdata"> <?php echo $value['percentage']?> </td>
+                              <td class="tbdata"> <?php echo $value['credit']?> </td>
                               <td class="tbdata"> <?php echo $status?> </td>
                               <td>
                                 <a href="modal-usuario.php?id=<?php echo $value['id']?>" title="Agregar una nota" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="fa fa-edit (alias)"></i></a>
