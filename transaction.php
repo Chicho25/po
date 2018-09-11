@@ -9,7 +9,7 @@
 
     include("header.php");
 
-    if(!isset($_SESSION['USER_ID']) || $_SESSION['USER_ROLE'] != 1)
+    if(!isset($_SESSION['USER_ID']) || $_SESSION['USER_ROLE'] == 4)
      {
           header("Location: index.php");
           exit;
@@ -84,7 +84,9 @@
                               <select class="form-control" name="customer" required="required" id="customers">
                                 <option value="">Seleccionar</option>
                                 <?PHP
-                                    $arrKindMeetings = GetRecords("Select * from customer where stat = 1");
+                                    $arrKindMeetings = GetRecords("Select * from customer where stat = 1 
+                                                                                                and 
+                                                                                                id_user_create ='".$_SESSION['USER_ID']."'");
                                     foreach ($arrKindMeetings as $key => $value) {
                                       $kinId = $value['id'];
                                       $kinName = $value['name'];

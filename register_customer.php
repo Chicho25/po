@@ -9,7 +9,7 @@
 
     include("header.php");
 
-    if(!isset($_SESSION['USER_ID']) || $_SESSION['USER_ROLE'] != 1)
+    if(!isset($_SESSION['USER_ID']) || $_SESSION['USER_ROLE'] == 4)
      {
           header("Location: index.php");
           exit;

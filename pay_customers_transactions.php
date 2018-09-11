@@ -8,7 +8,7 @@
     include("include/defs.php");
     include("header.php");
 
-    if(!isset($_SESSION['USER_ID']) || $_SESSION['USER_ROLE'] != 1)
+    if(!isset($_SESSION['USER_ID']) || $_SESSION['USER_ROLE'] != 1 && $_SESSION['USER_ROLE'] != 4)
      {
           header("Location: index.php");
           exit;
@@ -128,9 +128,17 @@
                 }
 
             }
+    if ($_SESSION['USER_ROLE'] == 4) {
+    
+      $where = "where (1=1) and transaction.stat in(1,2)"; 
+
+    }else{
+
     $where = "where (1=1)";
 
-     if(isset($_POST['name']) && $_POST['name'] != "")
+    }
+
+     /*if(isset($_POST['name']) && $_POST['name'] != "")
      {
         $where.=" and  customer.name LIKE '%".$_POST['name']."%'";
         $name = $_POST['name'];
@@ -154,7 +162,7 @@
      {
         $where.=" and transaction.stat = '".$_POST['master_stat']."'";
         $master_stat = $_POST['master_stat'];
-     }
+     } */
 
 
       $arrUser = GetRecords("SELECT
@@ -194,7 +202,7 @@
                             echo $message;
                           }
                   ?>
-                    <form method="post" action="" novalidate>
+                   <!-- <form method="post" action="" novalidate>
                       <div class="row wrapper">
                         <div class="col-sm-2 m-b-xs">
                           <div class="input-group">
@@ -235,7 +243,7 @@
                           </div>
                         </div>
                       </div>
-                    </form>
+                    </form> -->
                     <div class="table-responsive">
                         <table class="table table-striped b-t b-light" data-ride="datatables">
                           <thead>

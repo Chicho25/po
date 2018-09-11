@@ -14,136 +14,7 @@
           exit;
      }
 
-     if(isset($_POST['submitValueDollar'])){
-
-       $arrVal = array(
-                     "value_dollar" => $_POST['new_amount'],
-                     "id_user" => $_SESSION['USER_ID'],
-                     "stat" => 1
-                    );
-
-     $nId = InsertRec("value_dollar", $arrVal);
-
-       $message = '<div class="alert alert-success">
-                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                     <strong>Taza Actual Modificada</strong>
-                   </div>';
-
-     }
-
-     if(isset($_POST['deleteDetail'])){
-
-       $monto_a_sumar = $_POST["remaining"] + $_POST['amount'];
-
-       $arrTrans = array("remaining"=>$monto_a_sumar);
-
-       UpdateRec("transaction", "id = ".$_POST['id_transaction'], $arrTrans);
-
-       MySQLQuery("DELETE FROM main_pay WHERE id = '".$_POST['id_pay']."'");
-
-       $message = '<div class="alert alert-success">
-                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                     <strong>Detalle de pago Borrado</strong>
-                   </div>';
-
-     }
-
-     if(isset($_POST['submitTransaction'])) {
-
-       if(isset($_POST['stat'])){
-         $stat = $_POST['stat'];
-       }else{
-         $stat = $_POST['stat_hidden'];
-       }
-
-       $arrTrans = array("id_customer"=>$_POST['customer'],
-                         "amount"=>$_POST['get_amount'],
-                         "amount_transfer"=>$_POST['amount_transfer'],
-                         "remaining"=>$_POST['amount_transfer'],
-                         "messaje"=>$_POST['messaje'],
-                         "stat"=>$stat);
-
-        UpdateRec("transaction", "id = ".$_POST['id'], $arrTrans);
-
-        $message = '<div class="alert alert-success">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                      <strong>Transacciòn Actualizada</strong>
-                    </div>';
-
-     }
-
-     if(isset($_POST['submitPay'])){
-
-       $arrPay = array("id_transaction"=>$_POST['id_transaction'],
-                        "id_user"=>$_SESSION['USER_ID'],
-                        "amount_paid"=>$_POST['amount_transfer'],
-                        "messaje"=>$_POST['messaje'],
-                        "stat"=>1,
-                        "id_bank"=>$_POST['bank']);
-
-       $nId = InsertRec("main_pay", $arrPay);
-
-       if($nId > 0)
-       {
-
-           if(isset($_FILES['photo']) && $_FILES['photo']['tmp_name'] != "")
-           {
-               $target_dir = "attached_invoice/";
-               $target_file = $target_dir . basename($_FILES["photo"]["name"]);
-               $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-               $filename = $target_dir . $nId.".".$imageFileType;
-               $filenameThumb = $target_dir . $nId."_thumb.".$imageFileType;
-               if (move_uploaded_file($_FILES["photo"]["tmp_name"], $filename))
-               {
-                   /*makeThumbnailsWithGivenWidthHeight($target_dir, $imageFileType, $nId, 100, 100);*/
-
-                   UpdateRec("main_pay", "id = ".$nId, array("attached" => $filenameThumb));
-               }
-           }
-
-       $amount_remaining = $_POST['remaining'] - $_POST['amount_transfer'];
-         $stat = 2;
-       if($amount_remaining == 0){
-         $stat = 3;
-       }
-
-       UpdateRec("transaction", "id = ".$_POST['id_transaction'], array("remaining" => $amount_remaining,
-                                                                        "stat" => $stat));
-
-       $message = '<div class="alert alert-success">
-                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                     <strong>Pago Registrado</strong>
-                   </div>';
-
-          }
-
-     }
-
-    $where = "where (1=1)";
-
-     if(isset($_POST['name']) && $_POST['name'] != "")
-     {
-        $where.=" and  customer.name LIKE '%".$_POST['name']."%'";
-        $name = $_POST['name'];
-     }
-     if(isset($_POST['lname']) && $_POST['lname'] != "")
-     {
-        $where.=" and  customer.last_name LIKE '%".$_POST['lname']."%'";
-        $lname = $_POST['lname'];
-     }
-     if(isset($_POST['date_from']) && $_POST['date_from'] != "")
-     {
-        $where.=" and  transaction.date_time >= '".$_POST['date_from']."'";
-        $date_from = $_POST['date_from'];
-     }
-     if(isset($_POST['date_to']) && $_POST['date_to'] != "")
-     {
-        $where.=" and transaction.date_time <= '".$_POST['date_to']." 23:59:59"."'";
-        $date_to = $_POST['date_to'];
-     }
-
-
-      $arrTrans = GetRecords("SELECT
+      /*$arrTrans = GetRecords("SELECT
                               transaction.id,
                               transaction.date_time,
                               transaction.amount,
@@ -165,7 +36,7 @@
                               FROM transaction inner join customer on transaction.id_customer = customer.id
                               				         inner join type_transaction on transaction.id_type_transaction = type_transaction.id
                               $where
-                              and transaction.stat in(1, 2)");
+                              and transaction.stat in(1, 2)");*/
 
  ?>
 
@@ -176,7 +47,8 @@
                <header class="panel-heading">
                   <span class="h4">Principal</span>
                </header>
-               <div class="panel-body">
+               <div class="panel-body"> <h1>Zona en construccion</h1>
+               <?php /* ?>
                  <?php
                        if(isset($message) && $message !=""){
                            echo $message;
@@ -431,10 +303,10 @@
                                                                   id,
                                                                   name_craner,
                                                                   (select count(*) from crm_quot_producs where id_produc = crm_craner.id) as contar
-                                                                  from crm_craner ");*/ ?>
+                                                                  from crm_craner ");
                              data: [
                                <?php /*foreach ($registro_gruas as $key => $value):
-                                    */  //if($value['id']==9){ continue; }
+                                     //if($value['id']==9){ continue; }
                                   ?>
                                       ['Peru', 50],
                                       ['Panama', 25],
@@ -442,7 +314,7 @@
                                       ['Ecuador', 10],
                                       ['Argentina', 45],
                                       ['Uruguay', 9]
-                               <?php /*endforeach;*/ ?>
+                               <?php /*endforeach; ?>
                                       //['', 0]
                              ],
                              dataLabels: {
@@ -512,7 +384,7 @@
                                                           (select count(*) from crm_entry where MONTH(date_form) = 011 ) as nov,
                                                           (select count(*) from crm_entry where MONTH(date_form) = 012 ) as dic ");   */ ?>
 
-                            <?php /*foreach($ingresos as $key => $value){ */ ?>
+                            <?php /*foreach($ingresos as $key => $value){  ?>
                             data: [30, 50, 40,
                             90, 100, 111,
                             100, 60, 200,
@@ -528,6 +400,7 @@
                     <div id="container5" style="min-width: 300px; height: 400px; margin: 0 auto;"></div>
                   </div>
                 </div>
+                 <?php */ ?>
                </div>
              </section>
            </section>
