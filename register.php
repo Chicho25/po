@@ -17,7 +17,7 @@
      $message="";
 
      if (isset($_POST['country'])) {
-       
+
       $arrVal = array(
         "name" => $_POST['country'],
         "id_user_reg" => $_SESSION['USER_ID'],
@@ -39,7 +39,8 @@
         $USERNAME = $_POST['username'];
         $FIRSTNAME = $_POST['name'];
         $LASTNAME = $_POST['lastname'];
-        $password = encryptIt($_POST['password']);
+        //$password = encryptIt($_POST['password']);
+        $password = $_POST['password'];
         $usertype = $_POST['usertype'];
         $email = $_POST['email'];
         $location = $_POST['location'];
@@ -63,9 +64,9 @@
                           "email" => $email,
                           "id_roll_user" => $usertype,
                           "stat" => 1,
-                          "location" => $location, 
+                          "location" => $location,
                           "id_user_reg" => $_SESSION['USER_ID'],
-                          "credit" => $credit, 
+                          "credit" => $credit,
                           "referred" => $referred
                          );
 

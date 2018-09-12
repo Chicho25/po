@@ -38,7 +38,7 @@
            <section class="scrollable padder">
              <section class="panel panel-default">
                <header class="panel-heading">
-                  <span class="h4">Principal</span>
+                  <span class="h4">Cambio de Taza</span>
                </header>
                <div class="panel-body">
                  <?php
@@ -50,20 +50,20 @@
                   <div class="col-sm-12">
                     <div class="panel b-a">
                       <div class="row m-n">
-                        <?php $taza = GetRecords("select 
-                                                    name, 
+                        <?php $taza = GetRecords("select
+                                                    name,
                                                     id,
-                                                    (select 
-                                                        value_bolivar 
-                                                    from 
-                                                    value_coin 
-                                                    where 
-                                                    id_type_coin = tc.id 
-                                                    and 
+                                                    (select
+                                                        value_bolivar
+                                                    from
+                                                    value_coin
+                                                    where
+                                                    id_type_coin = tc.id
+                                                    and
                                                     id = (select max(id) from value_coin where id_type_coin = tc.id)) as value_bolivar
-                                                from 
+                                                from
                                                 type_coin tc"); ?>
-            
+
                         <?php foreach ($taza as $key => $value) { ?>
                         <div class="col-md-3 b-b b-r">
                           <a href="modal-udate-coin.php?id_type_coin=<?php echo $value['id']; ?>" data-toggle="ajaxModal" class="block padder-v hover">
