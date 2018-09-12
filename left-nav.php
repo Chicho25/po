@@ -71,7 +71,7 @@
                         </li>
                       </ul>
                     </li>
-                    
+
                     <?php /////////////////////////////////////////////////////////////////////// ?>
                     <li <?php if(isset($mantenimientoclass)) echo $mantenimientoclass;?>>
                       <a href="#" class="auto">
@@ -83,19 +83,19 @@
                         <span>Mantenimiento</span>
                       </a>
                       <ul class="nav dker">
-                        
+
                         <li <?php if(isset($classcountry)) echo $classcountry;?>>
                           <a href="update_cost_currently.php"><i class="i i-dot"></i>
                             <span>Taza Diaria</span>
                           </a>
                         </li>
-                        
+
                         <li <?php if(isset($classcountry)) echo $classcountry;?>>
                           <a href="add_country.php"><i class="i i-dot"></i>
                             <span>Registrar Pais</span>
                           </a>
                         </li>
-                       
+
                         <li <?php if(isset($editCountry)) echo $editCountry;?>>
                           <a href="view_country.php"><i class="i i-dot"></i>
                             <span>Ver Paises</span>
@@ -123,7 +123,7 @@
                         </li>
                       </ul>
                     </li>
-                    
+
                     <li <?php if(isset($bankclass)) echo $bankclass;?>>
                       <a href="#" class="auto">
                         <span class="pull-right text-muted">
@@ -214,7 +214,7 @@
                         </li>
                         <li <?php if(isset($editCntclass)) echo $editCntclass;?>>
                           <a href="customers.php"><i class="i i-dot"></i>
-                            <span>Ver Clienets</span>
+                            <span>Ver Clientes</span>
                           </a>
                         </li>
                       </ul>

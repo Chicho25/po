@@ -76,7 +76,7 @@
                 "descriptions" => $_POST['descriptions'],
                 "type_acount" => $_POST['type_acount'],
                 "id_user_reg" => $_SESSION['USER_ID'],
-                "data_time" => date("Y-m-d H:i:s"), 
+                "data_time" => date("Y-m-d H:i:s"),
                 "stat" => 1
                );
 
@@ -195,7 +195,7 @@
                               </div>
                           </div>
                           <div class="form-group required">
-                            <label class="col-lg-4 text-right control-label font-bold">Numero de cuenta</label>
+                            <label class="col-lg-4 text-right control-label font-bold">Cuenta</label>
                             <div class="col-lg-4">
                               <input type="text" class="form-control" placeholder="Cedula" name="number_acount" data-required="true">
                             </div>

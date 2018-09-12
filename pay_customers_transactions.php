@@ -18,41 +18,41 @@
 
         $obtener_banco = GetRecords("select id_bank_customer from acount_customer where id = '".$_POST['id_count_bank']."'");
 
-        $array_pago = array("id_transaction	"=> $_POST['id_transaction'], 
-                            "id_user"=>$_POST['id_user'], 
+        $array_pago = array("id_transaction	"=> $_POST['id_transaction'],
+                            "id_user"=>$_POST['id_user'],
                             "amount_paid"=>$_POST['amount_paid'],
                             "messaje"=>$_POST['messaje'],
-                            "stat"=>1, 
+                            "stat"=>1,
                             "id_bank"=>$obtener_banco[0]['id_bank_customer'],
                             "id_user_reg"=>$_SESSION['USER_ID'],
-                            "id_count_bank"=>$_POST['id_count_bank'], 
-                            "time_data" => date("Y-m-d H:i:s"), 
+                            "id_count_bank"=>$_POST['id_count_bank'],
+                            "time_data" => date("Y-m-d H:i:s"),
                             "id_customer"=>$_POST['id_customer']);
-                            
+
         $nId = InsertRec("main_pay", $array_pago);
 
-        /* registro del movimiento bancario */ 
+        /* registro del movimiento bancario */
 
-        $obtener_banco_mov = GetRecords("select 
-                                          id_bank 
-                                         from 
-                                          acount_bank 
-                                         where 
+        $obtener_banco_mov = GetRecords("select
+                                          id_bank
+                                         from
+                                          acount_bank
+                                         where
                                           id = '".$_POST['mov_bank']."'");
 
-        $obtener_precio_venta_compra = GetRecords("select 
-                                                    price_for_dollar, 
+        $obtener_precio_venta_compra = GetRecords("select
+                                                    price_for_dollar,
                                                     price_sales
-                                                    from 
+                                                    from
                                                     mov_bank
-                                                    where 
-                                                    id = (select 
+                                                    where
+                                                    id = (select
                                                             max(id)
-                                                            from 
+                                                            from
                                                             mov_bank
-                                                            where 
+                                                            where
                                                             type_mov = 2)");
-        
+
         $array_mov_bank = array("id_bank"=>$obtener_banco_mov[0]['id_bank'],
                                 "id_acount"=>$_POST['mov_bank'],
                                 "type_mov"=>1,
@@ -60,7 +60,7 @@
                                 "descriptions"=>$_POST['messaje'],
                                 "stat"=>1,
                                 "id_user_reg"=>$_SESSION['USER_ID'],
-                                "data_time"=>date("Y-m-d H:i:s"), 
+                                "data_time"=>date("Y-m-d H:i:s"),
                                 "price_for_dollar"=>$obtener_precio_venta_compra[0]['price_for_dollar'],
                                 "price_sales"=>$obtener_precio_venta_compra[0]['price_sales'],
                                 "id_transaction"=>$_POST['id_transaction'],
@@ -69,7 +69,7 @@
                                 "id_customer"=>$_POST['id_customer']);
 
         $nId_mov = InsertRec("mov_bank", $array_mov_bank);
-                            
+
         if($nId > 0)
         {
 
@@ -93,7 +93,7 @@
      // actualizar monto
     $pagado = GetRecords("select paidout from transaction where id = '".$_POST['id_transaction']."'");
 
-    $monto_total_actual = $pagado[0]['paidout'] + $_POST['amount_paid']; 
+    $monto_total_actual = $pagado[0]['paidout'] + $_POST['amount_paid'];
 
     $arrTransactions = array("paidout"=>$monto_total_actual);
 
@@ -104,7 +104,7 @@
     $pagado = GetRecords("select paidout, amount_transfer from transaction where id = '".$_POST['id_transaction']."'");
 
     if($pagado[0]['paidout'] == $pagado[0]['amount_transfer']){
-        
+
         $arrTransactionsStatus = array("stat"=>3);
 
         UpdateRec("transaction", "id = ".$_POST['id_transaction'], $arrTransactionsStatus);
@@ -113,7 +113,7 @@
                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                     <strong>Transaccion Pagada en su totalidad</strong>
                   </div>';
-    
+
     }else{
 
         $arrTransactionsStatus = array("stat"=>2);
@@ -129,8 +129,8 @@
 
             }
     if ($_SESSION['USER_ROLE'] == 4) {
-    
-      $where = "where (1=1) and transaction.stat in(1,2)"; 
+
+      $where = "where (1=1) and transaction.stat in(1,2)";
 
     }else{
 
@@ -183,9 +183,12 @@
                               when 2 then 'Abonada'
                               when 3 then 'Pagada'
                               when 4 then 'Anulada'
-                              end as transaction_status
+                              end as transaction_status,
+                              users.name as nombre_usuario,
+                              users.last_name as apellido_usuario
                               FROM transaction inner join customer on transaction.id_customer = customer.id
                               				         inner join type_transaction on transaction.id_type_transaction = type_transaction.id
+                                               inner join users on users.id = transaction.id_user_register
                               $where");
 
 ?>
@@ -249,6 +252,7 @@
                           <thead>
                             <tr>
                               <th>FECHA</th>
+                              <th>USUARIO</th>
                               <th>CLIENTE</th>
                               <th>TIPO DE TRANSACCIÒN</th>
                               <th>MONTO RECIBIDO</th>
@@ -266,6 +270,7 @@
                             foreach ($arrUser as $key => $value) { ?>
                           <tr>
                               <td class="tbdata"> <?php echo $value['date_time']?> </td>
+                              <td class="tbdata"> <?php echo $value['nombre_usuario'].' '.$value['apellido_usuario']?> </td>
                               <td class="tbdata">
                                 <a href="modal-customer.php?id=<?php echo $value['id_customer']?>" title="Ver usuario" data-toggle="ajaxModal"><?php echo $value['name'].' '.$value['last_name']?></a>
                               </td>
