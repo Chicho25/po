@@ -75,6 +75,8 @@
                 "number_acount" => $_POST['number_acount'],
                 "descriptions" => $_POST['descriptions'],
                 "type_acount" => $_POST['type_acount'],
+                "identifications" => $_POST['identifications'],
+                "name_acount" => $_POST["name_acount"],
                 "id_user_reg" => $_SESSION['USER_ID'],
                 "data_time" => date("Y-m-d H:i:s"),
                 "stat" => 1
@@ -198,6 +200,18 @@
                             <label class="col-lg-4 text-right control-label font-bold">Cuenta</label>
                             <div class="col-lg-4">
                               <input type="text" class="form-control" placeholder="Cedula" name="number_acount" data-required="true">
+                            </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-lg-4 text-right control-label font-bold">Nombre Titular</label>
+                            <div class="col-lg-4">
+                              <input type="text" class="form-control" placeholder="Nombre Titular" name="name_acount" data-required="true">
+                            </div>
+                          </div>
+                          <div class="form-group required">
+                            <label class="col-lg-4 text-right control-label font-bold">Cedula Titular</label>
+                            <div class="col-lg-4">
+                              <input type="text" class="form-control" placeholder="Cedula Titular" name="identifications" data-required="true">
                             </div>
                           </div>
                           <div class="form-group required">

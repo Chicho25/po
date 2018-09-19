@@ -8,7 +8,9 @@
                             ac.number_acount,
                             bc.name,
                             ac.descriptions, 
-                            ac.type_acount 
+                            ac.type_acount, 
+                            ac.identifications, 
+                            ac.name_acount 
                            FROM acount_customer ac INNER JOIN bank_customer bc on ac.id_bank_customer = bc.id
                            WHERE 
                            ac.id_customer = '".$_GET['id']."'
@@ -17,8 +19,8 @@
 
 ?>
 
-<div class="modal-dialog">
-  <div class="modal-content">
+<div class="modal-dialog" style="width:1000px;">
+  <div class="modal-content" style="width:1000px;">
   	<form role="form" class="form-horizontal" id="role-form"  method="post" action="" enctype="multipart/form-data">
 
 	    <div class="modal-header">
@@ -36,6 +38,8 @@
                         <th>BANCO</th>
                         <th>NUMERO DE CUENTA</th>
                         <th>TIPO</th>
+                        <th>NOMBRE</th>
+                        <th>CEDULA</th>
                         <th>DESCRIPCION</th>
                         <th>ELIMINAR</th>
                     </tr>
@@ -48,9 +52,27 @@
                         <td class="tbdata"> <?php echo $value['name']?> </td>
                         <td class="tbdata"> <?php echo $value['number_acount']?> </td>
                         <td class="tbdata"> <?php if($value['type_acount']==1){ echo 'Ahorro'; }else{ echo 'Corriente'; }?> </td>
+                        <td class="tbdata"> 
+                        <?php if($value['name_acount'] == ''){ ?>
+                            <form action="" method="post" style="float:left;">
+                            <input type="text" value="<?php echo $value['name_acount']?>" autocomplete="off" name="name_acount">
+                        <?php }else{ echo $value['name_acount']; } ?>
+                        </td>
+                        <td class="tbdata">
+                        <?php if($value['identifications'] == ''){ ?>    
+                            <input type="text" value="<?php echo $value['identifications']?>" autocomplete="off" name="identifications">
+                        <?php }else{ echo $value['identifications']; } ?>
+                        </td>
                         <td class="tbdata"> <?php echo $value['descriptions']?> </td>
                         <td>
-                            <!--<a href="edit-bank.php?id=<?php echo $value['id']?>" data-dismiss="modal" data-toggle="ajaxModal"  title="Editar" class="btn btn-sm btn-icon btn-primary"><i class="glyphicon glyphicon-edit"></i></a>-->
+                            <?php if($value['identifications'] == ''){ ?>
+                            
+                                <button name="edit" class="btn btn-sm btn-icon btn-primary">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                </button>
+                                <input type="hidden" value="<?php echo $value['id']?>" name="edit_acount">
+                            </form>
+                            <?php } ?>
                             <form action="" method="post">
                                 <button name="eliminar" class="btn btn-sm btn-icon btn-danger"><i class="glyphicon glyphicon-trash"></i></button>
                                 <input type="hidden" value="<?php echo $value['id']?>" name="id_customer_acount">

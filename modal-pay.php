@@ -55,7 +55,9 @@
                   $cuentas = GetRecords("SELECT 
                                           ac.id,
                                           ac.number_acount, 
-                                          bc.name  
+                                          bc.name, 
+                                          ac.name_acount,
+                                          ac.identifications 
                                         FROM 
                                           acount_customer ac inner join bank_customer bc on ac.id_bank_customer = bc.id
                                         WHERE 
@@ -66,10 +68,31 @@
                                         ac.stat = 1");
                   foreach ($cuentas as $key => $value) {
                   echo '<option value="'.$value['id'].'">'.$value['name'].' // '.$value['number_acount'].'</option>';
+                  $numero_cuenta = $value['number_acount'];
+                  $name_acount = $value['name_acount'];
+                  $identifications = $value['identifications'];
                   }
                   ?>
                 </select>
                 <input type="hidden" name="id_count_bank" value="<?php echo $acount_bank; ?>">
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-lg-3 text-right control-label">Numero</label>
+              <div class="col-lg-7" style="margin-top:5px;">
+                  <b><?php echo $numero_cuenta; ?></b>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-lg-3 text-right control-label">Nombre Titular</label>
+              <div class="col-lg-7" style="margin-top:5px;">
+                  <b><?php echo $name_acount; ?></b>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-lg-3 text-right control-label">Cedula Titular</label>
+              <div class="col-lg-7" style="margin-top:5px;">
+                  <b><?php echo $identifications; ?></b>
               </div>
             </div>
             <div class="form-group required">

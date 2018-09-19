@@ -15,6 +15,19 @@
           exit;
      }
 
+     if (isset($_POST['edit_acount'])) {
+                
+      $arrUser = array("name_acount" => $_POST['name_acount'],
+                       "identifications" => $_POST['identifications']);
+
+          UpdateRec("acount_customer", "id = ".$_POST['id'], $arrUser);
+
+          $message = '<div class="alert alert-success">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                          <strong>Cuenta Modificada</strong>
+                        </div>';
+     }
+
      if (isset($_POST['submitCreateBank'])) {
 
       $arrVal = array(
@@ -23,6 +36,8 @@
         "number_acount" => $_POST['number_acount'],
         "descriptions" => $_POST['descriptions'],
         "type_acount" => $_POST['type_acount'],
+        "identifications" => $_POST['identifications'],
+        "name_acount" => $_POST["name_acount"],
         "id_user_reg" => $_SESSION['USER_ID'],
         "data_time" => date("Y-m-d H:i:s"), 
         "stat" => 1

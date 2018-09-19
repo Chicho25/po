@@ -39,9 +39,21 @@
                 </div>
                 </div>
                 <div class="form-group ">
-                <label class="col-lg-3 text-right control-label">Numero de cuenta</label>
+                    <label class="col-lg-3 text-right control-label">Cuenta</label>
+                    <div class="col-lg-7">
+                        <input type="text" class="form-control" placeholder="Cedula" name="number_acount" data-required="true">
+                    </div>
+                </div>
+                <div class="form-group required">
+                <label class="col-lg-3 text-right control-label font-bold">Nombre Titular</label>
                 <div class="col-lg-7">
-                    <input type="text" class="form-control" placeholder="Cedula" name="number_acount" data-required="true">
+                    <input type="text" class="form-control" placeholder="Nombre Titular" name="name_acount" data-required="true">
+                </div>
+                </div>
+                <div class="form-group required">
+                <label class="col-lg-3 text-right control-label font-bold">Cedula Titular</label>
+                <div class="col-lg-7">
+                    <input type="text" class="form-control" placeholder="Cedula Titular" name="identifications" data-required="true">
                 </div>
                 </div>
                 <div class="form-group ">
