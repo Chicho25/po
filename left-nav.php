@@ -174,16 +174,23 @@
                         <span>Pagos</span>
                       </a>
                       <ul class="nav dker">
-                        <li <?php if(isset($userpay)) echo $userpay;?>>
-                          <a href="view_total_amount_users.php"><i class="i i-dot"></i>
-                            <span>Pago a Usuario</span>
+                        <li <?php if(isset($payusers)) echo $payusers;?>>
+                          <a href="averages_users.php"><i class="i i-dot"></i>
+                            <span>Pago Usuario / Central</span>
                           </a>
                         </li>
                       </ul>
                       <ul class="nav dker">
-                        <li <?php if(isset($registerPay)) echo $registerPay;?>>
-                          <a href="#"><i class="i i-dot"></i>
-                            <span>Pago a Central</span>
+                        <li <?php if(isset($historicalPay)) echo $historicalPay;?>>
+                          <a href="historical_payment.php"><i class="i i-dot"></i>
+                            <span>Historial de Pagos</span>
+                          </a>
+                        </li>
+                      </ul>
+                      <ul class="nav dker">
+                        <li <?php if(isset($historychangepay)) echo $historychangepay;?>>
+                          <a href="view_total_amount_users.php"><i class="i i-dot"></i>
+                            <span>Historial de Cambio</span>
                           </a>
                         </li>
                       </ul>

@@ -14,29 +14,18 @@
           exit;
      }
 
-      /*$arrTrans = GetRecords("SELECT
-                              transaction.id,
-                              transaction.date_time,
-                              transaction.amount,
-                              transaction.amount_transfer,
-                              transaction.stat,
-                              transaction.messaje,
-                              transaction.remaining,
-                              customer.id as id_customer,
-                              customer.name,
-                              customer.last_name,
-                              customer.phone,
-                              type_transaction.name as name_type_transaction,
-                              case transaction.stat
-                              when 1 then 'Pendiente por Pago'
-                              when 2 then 'Abonada'
-                              when 3 then 'Pagada'
-                              when 4 then 'Anulada'
-                              end as transaction_status
-                              FROM transaction inner join customer on transaction.id_customer = customer.id
-                              				         inner join type_transaction on transaction.id_type_transaction = type_transaction.id
-                              $where
-                              and transaction.stat in(1, 2)");*/
+  $precio_actual_dolar = GetRecords("select 
+                                      price_for_dollar, 
+                                      price_sales
+                                      from 
+                                      mov_bank
+                                      where 
+                                      id = (select 
+                                          max(id)
+                                          from 
+                                          mov_bank
+                                          where 
+                                          type_mov = 2)");
 
  ?>
 
@@ -47,8 +36,8 @@
                <header class="panel-heading">
                   <span class="h4">Principal</span>
                </header>
-               <div class="panel-body"> <h1>Zona en construccion</h1>
-               <?php /* ?>
+               <div class="panel-body">
+               <?php  ?>
                  <?php
                        if(isset($message) && $message !=""){
                            echo $message;
@@ -60,17 +49,17 @@
                       <div class="row m-n">
                         <div class="col-md-3 b-b b-r">
                           <?php
-                          $arrUser = GetRecords("SELECT * from value_dollar order by id desc limit 1");
-                          $id = $arrUser[0]['id'];
-                          $value = $arrUser[0]['value_dollar'];?>
-                          <a href="modal-taza-actual.php?id=<?php echo $id;?>" title="Cambiar la taza actual" data-toggle="ajaxModal" class="block padder-v hover">
+                          $arrUser = GetRecords("select count(*) as total_trans from transaction where stat = 1");
+                          
+                          $value = $arrUser[0]['total_trans'];?>
+                          <a href="#" title="" class="block padder-v hover">
                             <span class="i-s i-s-2x pull-left m-r-sm">
                               <i class="i i-hexagon2 i-s-base text-success hover-rotate"></i>
                               <i class="fa fa-usd i-1x text-white"></i>
                             </span>
                                 <span class="clear">
                                 <span class="h3 block m-t-xs text-success"><?php echo number_format($value, 2, ',', '.');?> Bs</span>
-                                <small class="text-muted text-u-c">Taza Actual de Cambio</small>
+                                <small class="text-muted text-u-c">Transacciones Pendientes</small>
                                 </span>
                           </a>
                         </div>
@@ -82,12 +71,12 @@
                             </span>
                             <span class="clear">
                               <?php
-                              $arrSum = GetRecords("SELECT sum(remaining) as sum_remaining from transaction where stat in(1, 2)");
+                              $arrSum = GetRecords("select sum(amount_transfer) as total_trans_bss from transaction where stat = 1");
 
-                              $sum = $arrSum[0]['sum_remaining']/$value;?>
-
+                              $sum = $arrSum[0]['total_trans_bss']/$precio_actual_dolar[0]['price_sales'];?>
+                              
                               <span class="h3 block m-t-xs text-danger"><?php echo number_format($sum, 2, ',', '.'); ?> $</span>
-                              <small class="text-muted text-u-c">Pago Pendiente en $</small>
+                              <small class="text-muted text-u-c">Pendiente en $</small>
                             </span>
                           </a>
                         </div>
@@ -99,16 +88,30 @@
                             </span>
                             <span class="clear">
                               <?php
-                              $arrSum = GetRecords("SELECT sum(remaining) as sum_remaining from transaction where stat in(1, 2)");
+                              $arrSum = GetRecords("select sum(amount_transfer) as total_trans_bss from transaction where stat = 1");
 
-                              $sum = $arrSum[0]['sum_remaining'];?>
+                              $sum = $arrSum[0]['total_trans_bss'];?>
 
                               <span class="h3 block m-t-xs text-danger"><?php echo number_format($sum, 2, ',', '.'); ?> Bs</span>
-                              <small class="text-muted text-u-c">Pago Pendiente en Bs</small>
+                              <small class="text-muted text-u-c">Pendiente en BsS</small>
                             </span>
                           </a>
                         </div>
                         <div class="col-md-3 b-b">
+                          <a href="#" class="block padder-v hover">
+                            <span class="i-s i-s-2x pull-left m-r-sm">
+                              <i class="i i-hexagon2 i-s-base text-primary hover-rotate"></i>
+                              <i class="i i-users2 i-sm text-white"></i>
+                            </span>
+                            <span class="clear">
+                              <?php $arrCus = GetRecords("SELECT count(*) as users from users where stat = 1");
+                                    $user = $arrCus[0]['users'];?>
+                              <span class="h3 block m-t-xs text-primary"><?php echo $user; ?></span>
+                              <small class="text-muted text-u-c">Total Usuarios</small>
+                            </span>
+                          </a>
+                        </div>
+                        <div class="col-md-3 b-b b-r">
                           <a href="#" class="block padder-v hover">
                             <span class="i-s i-s-2x pull-left m-r-sm">
                               <i class="i i-hexagon2 i-s-base text-primary hover-rotate"></i>
@@ -130,11 +133,11 @@
                               <i class="glyphicon glyphicon-warning-sign i-sm text-white"></i>
                             </span>
                             <span class="clear">
-                              <?php $arrCon = GetRecords("SELECT count(*) as con_trans from transaction where stat in(1, 2)");
+                              <?php $arrCon = GetRecords("select count(*) as total_trans from transaction where stat = 2");
 
-                                    $con = $arrCon[0]['con_trans'];?>
+                                    $con = $arrCon[0]['total_trans'];?>
                               <span class="h3 block m-t-xs text-warning"><?php echo $con; ?> <span class="text-sm"></span></span>
-                              <small class="text-muted text-u-c">Transacciones Pendientes</small>
+                              <small class="text-muted text-u-c">Transacciones Abonadas</small>
                             </span>
                           </a>
                         </div>
@@ -145,11 +148,11 @@
                               <i class="glyphicon glyphicon-warning-sign i-sm text-white"></i>
                             </span>
                             <span class="clear">
-                              <?php $arrCon = GetRecords("SELECT count(*) as con_trans from transaction");
+                              <?php $arrCon = GetRecords("select sum(amount_transfer) as total_trans_bss from transaction where stat = 2");
 
-                                    $con = $arrCon[0]['con_trans'];?>
-                              <span class="h3 block m-t-xs text-warning"><?php echo $con; ?> <span class="text-sm"></span></span>
-                              <small class="text-muted text-u-c">Total Transacciones</small>
+                                    $con = $arrCon[0]['total_trans_bss']/$precio_actual_dolar[0]['price_sales'];?>
+                              <span class="h3 block m-t-xs text-warning"><?php echo number_format($con, 2, ',', '.'); ?> <span class="text-sm"></span></span>
+                              <small class="text-muted text-u-c">Total Abonadas $</small>
                             </span>
                           </a>
                         </div>
@@ -160,9 +163,23 @@
                               <i class="glyphicon glyphicon-warning-sign i-sm text-white"></i>
                             </span>
                             <span class="clear">
-                              <?php $arrCon = GetRecords("SELECT count(*) as con_trans from transaction where date_time >= '".date("Y-m-d")."' and date_time <= '".date("Y-m-d")." 23:59:59"."'");
+                              <?php $arrCon = GetRecords("select sum(amount_transfer) as total_trans_bss from transaction where stat = 2");
 
-                                    $con = $arrCon[0]['con_trans'];?>
+                                    $con = $arrCon[0]['total_trans_bss'];?>
+                              <span class="h3 block m-t-xs text-warning"><?php echo number_format($con, 2, ',', '.'); ?> <span class="text-sm"></span></span>
+                              <small class="text-muted text-u-c">Total Abonadas BsS</small>
+                            </span>
+                          </a>
+                        </div>
+                        <div class="col-md-3 b-b b-r">
+                          <a href="#" class="block padder-v hover">
+                            <span class="i-s i-s-2x pull-left m-r-sm">
+                              <i class="i i-hexagon2 i-s-base text-warning hover-rotate"></i>
+                              <i class="glyphicon glyphicon-warning-sign i-sm text-white"></i>
+                            </span>
+                            <span class="clear">
+                              <?php $arrCon = GetRecords("select count(*) as hoy from transaction where time_data >= CURDATE()");
+                                    $con = $arrCon[0]['hoy'];?>
                               <span class="h3 block m-t-xs text-warning"><?php echo $con; ?> <span class="text-sm"></span></span>
                               <small class="text-muted text-u-c">Total Transacciones Hoy</small>
                             </span>
@@ -175,16 +192,77 @@
                               <i class="glyphicon glyphicon-globe i-sm text-white"></i>
                             </span>
                             <span class="clear">
-                              <?php $arrCon = GetRecords("SELECT count(*) as con_trans from transaction where stat in(3)");
+                              <?php $arrCon = GetRecords("SELECT count(*) as refered from users where stat = 2 and referred <> 0");
 
-                                    $con = $arrCon[0]['con_trans'];?>
-                              <span class="h3 block m-t-xs text-primary"><?php echo $con; ?> <span class="text-sm"></span></span>
-                              <small class="text-muted text-u-c">Mi Red</small>
+                                    $refered = $arrCon[0]['refered'];?>
+                              <span class="h3 block m-t-xs text-primary"><?php echo $refered; ?> <span class="text-sm"></span></span>
+                              <small class="text-muted text-u-c">Referidos</small>
+                            </span>
+                          </a>
+                        </div>
+                        <div class="col-md-3 b-b b-r">
+                          <a href="#" class="block padder-v hover">
+                            <span class="i-s i-s-2x pull-left m-r-sm">
+                              <i class="i i-hexagon2 i-s-base text-primary hover-rotate"></i>
+                              <i class="glyphicon glyphicon-globe i-sm text-white"></i>
+                            </span>
+                            <span class="clear">
+                              <?php $arrCon = GetRecords("select sum(amount_pay) as pago_usuario from average_users where id_user not in(1,2)");
+
+                                    $pago_usuario = $arrCon[0]['pago_usuario'];?>
+                              <span class="h3 block m-t-xs text-primary"><?php echo number_format($pago_usuario, 2, ',', '.'); ?> <span class="text-sm"></span></span>
+                              <small class="text-muted text-u-c">Pentiente Pago a Usuario</small>
+                            </span>
+                          </a>
+                        </div>
+                        <div class="col-md-3 b-b b-r">
+                          <a href="#" class="block padder-v hover">
+                            <span class="i-s i-s-2x pull-left m-r-sm">
+                              <i class="i i-hexagon2 i-s-base text-primary hover-rotate"></i>
+                              <i class="glyphicon glyphicon-globe i-sm text-white"></i>
+                            </span>
+                            <span class="clear">
+                              <?php $arrCon = GetRecords("select sum(amount_accumulated) as pago_central from average_users where id_user not in(1,2)");
+
+                                    $pago_central = $arrCon[0]['pago_central'];?>
+                              <span class="h3 block m-t-xs text-primary"><?php echo number_format($pago_central, 2, ',', '.'); ?> <span class="text-sm"></span></span>
+                              <small class="text-muted text-u-c">Pendiente Pago a Central</small>
+                            </span>
+                          </a>
+                        </div>
+                        <div class="col-md-3 b-b b-r">
+                          <a href="#" class="block padder-v hover">
+                            <span class="i-s i-s-2x pull-left m-r-sm">
+                              <i class="i i-hexagon2 i-s-base text-primary hover-rotate"></i>
+                              <i class="glyphicon glyphicon-globe i-sm text-white"></i>
+                            </span>
+                            <span class="clear">
+                              <?php $arrCon = GetRecords("select sum(amount_pay) as pago_sistema from average_users where id_user in(1)");
+
+                                    $pago_sistema = $arrCon[0]['pago_sistema'];?>
+                              <span class="h3 block m-t-xs text-primary"><?php echo number_format($pago_sistema, 2, ',', '.'); ?> <span class="text-sm"></span></span>
+                              <small class="text-muted text-u-c">Pendiente Pago a Sistema</small>
+                            </span>
+                          </a>
+                        </div>
+                        <div class="col-md-3 b-b b-r">
+                          <a href="#" class="block padder-v hover">
+                            <span class="i-s i-s-2x pull-left m-r-sm">
+                              <i class="i i-hexagon2 i-s-base text-primary hover-rotate"></i>
+                              <i class="glyphicon glyphicon-globe i-sm text-white"></i>
+                            </span>
+                            <span class="clear">
+                              <?php $arrCon = GetRecords("select sum(amount_pay) as ganancia_central from average_users where id_user in(2)");
+
+                                    $ganancia_central = $arrCon[0]['ganancia_central'];?>
+                              <span class="h3 block m-t-xs text-primary"><?php echo number_format($ganancia_central, 2, ',', '.'); ?> <span class="text-sm"></span></span>
+                              <small class="text-muted text-u-c">Ganancia Central</small>
                             </span>
                           </a>
                         </div>
 
                       </div>
+                      <!--
                       <form method="post" action="" novalidate>
                         <div class="row wrapper">
                           <div class="col-sm-2 m-b-xs">
@@ -213,54 +291,8 @@
                             </div>
                           </div>
                         </div>
-                      </form>
-                      <div class="table-responsive">
-                          <table class="table table-striped b-t b-light" data-ride="datatables">
-                            <thead>
-                              <tr>
-                                <th>FECHA</th>
-                                <th>CLIENTE</th>
-                                <th>TIPO DE TRANSACCIÒN</th>
-                                <th>MONTO RECIBIDO</th>
-                                <th>MONTO A TRANSFERIR</th>
-                                <th>RESTANTE</th>
-                                <th>ESTADO</th>
-                                <th>PAGAR</th>
-                                <th>VER PAGOS</th>
-                                <th>EDITAR</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                            <?PHP
-                              $i=1;
-                              foreach ($arrTrans as $key => $value) { ?>
-                            <tr>
-                                <td class="tbdata"> <?php echo $value['date_time']?> </td>
-                                <td class="tbdata">
-                                  <a href="modal-customer.php?id=<?php echo $value['id_customer']?>" title="Ver usuario" data-toggle="ajaxModal"><?php echo $value['name'].' '.$value['last_name']?></a>
-                                </td>
-                                <td class="tbdata"> <?php echo $value['name_type_transaction']?> </td>
-                                <td class="tbdata"> <?php echo number_format($value['amount'], 2, ',', '.')?> $</td>
-                                <td class="tbdata"> <?php echo number_format($value['amount_transfer'], 2, ',', '.')?> Bs</td>
-                                <td class="tbdata"> <?php echo number_format($value['remaining'], 2, ',', '.')?> Bs</td>
-                                <td class="tbdata"> <?php echo $value['transaction_status']?> </td>
-                                <td>
-                                  <?php if($value['stat']==3 || $value['stat']==4){
-                                        }else{ ?>
-                                  <a href="modal-pay.php?id_transaction=<?php echo $value['id']?>&remaining=<?php echo $value['remaining']?>" title="Agregar una nota" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="fa fa-usd"></i></a>
-                                <?php } ?>
-                                </td>
-                                <td>
-                                  <a href="modal-detail-pay.php?id=<?php echo $value['id']?>&remaining=<?php echo $value['remaining']?>" title="Agregar una nota" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="glyphicon glyphicon-eye-open"></i></a>
-                                </td>
-                                <td>
-                                  <a href="modal-edit-transaction.php?id=<?php echo $value['id']?>" title="Agregar una nota" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="fa fa-edit (alias)"></i></a>
-                                </td>
-                            </tr>
-                            <?php $i++; } ?>
-                            </tbody>
-                          </table>
-                        </div>
+                      </form>-->
+                      
                     </div>
                     <hr>
                     <script type="text/javascript">
@@ -288,34 +320,30 @@
                          yAxis: {
                              min: 0,
                              title: {
-                                 text: 'Numero de Transacciones'
+                                 text: 'Monto Generado Por Pais'
                              }
                          },
                          legend: {
                              enabled: false
                          },
                          tooltip: {
-                             pointFormat: 'Numero de transacciones : <b>{point.y:.1f} </b>'
+                             pointFormat: 'Monto Generado : <b>{point.y:.1f} </b>'
                          },
                          series: [{
                              name: 'Population',
-                             <?php /*$registro_gruas = GetRecords("select
-                                                                  id,
-                                                                  name_craner,
-                                                                  (select count(*) from crm_quot_producs where id_produc = crm_craner.id) as contar
-                                                                  from crm_craner ");
+                             <?php $paises = GetRecords("select c.name, 
+                                                                count(*) as cantidad,  
+                                                                sum(amount_transfer) as bss
+                                                                from transaction t inner join users u on t.id_user_register = u.id
+                                                                                   inner join country c on u.location = c.id
+                                                                                   where 
+                                                                                   t.stat not in(4)
+                                                                                   group by c.name"); ?>
                              data: [
-                               <?php /*foreach ($registro_gruas as $key => $value):
-                                     //if($value['id']==9){ continue; }
-                                  ?>
-                                      ['Peru', 50],
-                                      ['Panama', 25],
-                                      ['Colombia', 30],
-                                      ['Ecuador', 10],
-                                      ['Argentina', 45],
-                                      ['Uruguay', 9]
-                               <?php /*endforeach; ?>
-                                      //['', 0]
+                               <?php foreach($paises as $key => $value): ?>
+                                      ['<?php echo $value['name']; ?>', <?php echo number_format($value['bss']/$precio_actual_dolar[0]['price_sales'], 2, ',', '.'); ?>],
+                               <?php endforeach; ?>
+                                      ['', 0]
                              ],
                              dataLabels: {
                                  enabled: true,
@@ -335,7 +363,7 @@
                     </script>
 
                     <script type="text/javascript">
-                    $(function () {
+                    /*$(function () {
                     $('#container5').highcharts({
                         title: {
                             text: 'Linea de tiempo por año',
@@ -382,17 +410,17 @@
                                                           (select count(*) from crm_entry where MONTH(date_form) = 09 ) as sep,
                                                           (select count(*) from crm_entry where MONTH(date_form) = 010 ) as oct,
                                                           (select count(*) from crm_entry where MONTH(date_form) = 011 ) as nov,
-                                                          (select count(*) from crm_entry where MONTH(date_form) = 012 ) as dic ");   */ ?>
+                                                          (select count(*) from crm_entry where MONTH(date_form) = 012 ) as dic ");*/ ?>
 
                             <?php /*foreach($ingresos as $key => $value){  ?>
                             data: [30, 50, 40,
                             90, 100, 111,
                             100, 60, 200,
                             70, 80, 200]
-                            <?php //} ?>
+                            <?php /*}*/ ?>
                         }]
                     });
-                    });
+                    });*/ ?>
                     </script>
                     <script src="po_grafict/js/highcharts.js"></script>
                     <script src="po_grafict/js/modules/exporting.js"></script>
@@ -400,7 +428,7 @@
                     <div id="container5" style="min-width: 300px; height: 400px; margin: 0 auto;"></div>
                   </div>
                 </div>
-                 <?php */ ?>
+                 <?php ?>
                </div>
              </section>
            </section>

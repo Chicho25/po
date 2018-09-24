@@ -2,7 +2,7 @@
     ob_start();
     session_start();
     $pay="class='active'";
-    $editpay="class='active'";
+    $historicalPay="class='active'";
 
     include("include/config.php");
     include("include/defs.php");
@@ -125,55 +125,9 @@
                     <strong>Transaccion Abonada</strong>
                   </div>';
 
-          }
+                }
 
-    
-    // actualizar monto del usuario...
-
-    $obtener_monto_usuario = GetRecords("select * from average_users where id_user = '".$_POST['id_user']."'");
-    $obtener_monto_central = GetRecords("select * from average_users where id_user = 2");
-    $obtener_monto_sistema = GetRecords("select * from average_users where id_user = 1");
-
-    $acumulado = $obtener_monto_usuario[0]['amount_accumulated'];
-    $acumulado_conteral = $obtener_monto_central[0]['amount_accumulated'];
-    $acumulado_sistema = $obtener_monto_sistema[0]['amount_accumulated'];
-
-    //monto acumulado
-    $monto_acumulado = ($_POST['amount_paid'] / $obtener_precio_venta_compra[0]['price_sales']) + $acumulado;
-    $monto_central = ($_POST['amount_paid'] / $obtener_precio_venta_compra[0]['price_sales']) + $acumulado_conteral;
-    $monto_sistema = ($_POST['amount_paid'] / $obtener_precio_venta_compra[0]['price_sales']) + $acumulado_sistema;
-
-    $monto_por_pagar = (($monto_acumulado * 20)/ 100);
-    $ganancia_central = (($monto_acumulado * 60)/ 100) + $monto_central;
-    $ganancia_sistema = (($monto_acumulado * 20)/ 100) + $monto_sistema;
-    //monto a pagar  central y sistema
-    UpdateRec("average_users", "id_user = 1", array("amount_pay"=>$ganancia_sistema));
-    UpdateRec("average_users", "id_user = 2", array("amount_pay"=>$ganancia_central));
-    // monto a pagar usuario
-
-    $array_user_averge = array("id_user"=>$_POST['id_user'],
-                               "amount_accumulated"=>$monto_acumulado,
-                               "amount_pay"=>$monto_por_pagar,
-                               "price_for_dollar"=>$obtener_precio_venta_compra[0]['price_for_dollar'],
-                               "price_sales"=>$obtener_precio_venta_compra[0]['price_sales'],
-                               "stat"=>1);
-
-    $nId_aveg = UpdateRec("average_users", "id_user = ".$_POST['id_user'], $array_user_averge);
-
-    $array_detail_average = array("id_average"=>$obtener_monto_usuario[0]['id'],
-                                  "id_user"=>$_POST['id_user'],
-                                  "id_transactions"=>$_POST['id_transaction'],
-                                  "price_for_dollar"=>$obtener_precio_venta_compra[0]['price_for_dollar'],
-                                  "price_sales"=>$obtener_precio_venta_compra[0]['price_sales'],
-                                  "stat"=>1,
-                                  "id_user_reg"=>$_SESSION['USER_ID'],
-                                  "data_time"=>date("Y-m-d H:i:s"));
-
-     InsertRec("average_users_detail", $array_detail_average);
-
-    // fin de actualizacion de saldo de usuarios
-
-    }
+            }
     if ($_SESSION['USER_ROLE'] == 4) {
 
       $where = "where (1=1) and transaction.stat in(1,2)";
@@ -235,7 +189,7 @@
                               FROM transaction inner join customer on transaction.id_customer = customer.id
                               				         inner join type_transaction on transaction.id_type_transaction = type_transaction.id
                                                inner join users on users.id = transaction.id_user_register
-                              $where");
+                              where (1=1) and transaction.stat in(3)");
 
 ?>
 	<section id="content">
@@ -305,7 +259,6 @@
                               <th>MONTO A TRANSFERIR</th>
                               <th>PAGADO</th>
                               <th>ESTADO</th>
-                              <th>PAGAR</th>
                               <th>VER PAGOS</th>
                               <th>DETALLE</th>
                             </tr>
@@ -326,13 +279,10 @@
                               <td class="tbdata"> <?php echo number_format($value['paidout'], 2, ',', '.')?> Bs</td>
                               <td class="tbdata"> <?php echo $value['transaction_status']?> </td>
                               <td>
-                                <a href="modal-pay.php?id=<?php echo $value['id']?>" title="Agregar una nota" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="fa fa-dollar"></i></a>
+                                <a href="modal-detail-pay.php?id=<?php echo $value['id']?>" title="Ver Pagos" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="glyphicon glyphicon-eye-open"></i></a>
                               </td>
                               <td>
-                                <a href="modal-detail-pay.php?id=<?php echo $value['id']?>" title="Agregar una nota" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="glyphicon glyphicon-eye-open"></i></a>
-                              </td>
-                              <td>
-                                <a href="modal-edit-transaction.php?id=<?php echo $value['id']?>" title="Eliminar" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="glyphicon glyphicon-edit"></i></a>
+                                <a href="modal-edit-transaction.php?id=<?php echo $value['id']?>" title="Detalle" data-toggle="ajaxModal" class="btn btn-sm btn-icon btn-primary"><i class="glyphicon glyphicon-edit"></i></a>
                               </td>
                           </tr>
                           <?php

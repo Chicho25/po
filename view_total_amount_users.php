@@ -2,7 +2,7 @@
     ob_start();
     session_start();
     $pay="class='active'";
-    $userpay="class='active'";
+    $historychangepay="class='active'";
 
     include("include/config.php");
     include("include/defs.php");
