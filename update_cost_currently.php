@@ -72,7 +72,7 @@
                               <i class="fa fa-money i-sm text-white"></i>
                             </span>
                             <span class="clear">
-                              <span class="h3 block m-t-xs text-danger"><?php echo number_format($value['value_bolivar'], 2, ',', '.'); ?> $</span>
+                              <span class="h3 block m-t-xs text-danger"><?php echo number_format($value['value_bolivar'], 2, ',', '.'); ?> BsS.</span>
                               <small class="text-muted text-u-c"><?php echo $value['name']; ?></small>
                             </span>
                           </a>
