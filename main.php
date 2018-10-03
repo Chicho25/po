@@ -58,7 +58,7 @@
                               <i class="fa fa-usd i-1x text-white"></i>
                             </span>
                                 <span class="clear">
-                                <span class="h3 block m-t-xs text-success"><?php echo number_format($value, 2, ',', '.');?> Bs</span>
+                                <span class="h3 block m-t-xs text-success"><?php echo $value?></span>
                                 <small class="text-muted text-u-c">Transacciones Pendientes</small>
                                 </span>
                           </a>
