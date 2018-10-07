@@ -61,8 +61,8 @@
                                                     id_type_coin = tc.id
                                                     and
                                                     id = (select max(id) from value_coin where id_type_coin = tc.id)) as value_bolivar
-                                                from
-                                                type_coin tc"); ?>
+                                                  from
+                                                  type_coin tc"); ?>
 
                         <?php foreach ($taza as $key => $value) { ?>
                         <div class="col-md-3 b-b b-r">
