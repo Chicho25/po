@@ -127,7 +127,7 @@
 
           }
 
-    
+
     // actualizar monto del usuario...
 
     $obtener_monto_usuario = GetRecords("select * from average_users where id_user = '".$_POST['id_user']."'");
@@ -148,9 +148,9 @@
     //$monto_central = ($_POST['amount_paid'] / $obtener_precio_venta_compra[0]['price_sales']); //+ $acumulado_conteral;
     //$monto_sistema = ($_POST['amount_paid'] / $obtener_precio_venta_compra[0]['price_sales']); //+ $acumulado_sistema;
 
-    $monto_por_pagar = (($monto_pagado_dolar * 20)/ 100) + $acumulado_user;
-    $ganancia_central = (($monto_pagado_dolar * 60)/ 100) + $acumulado_conteral;
-    $ganancia_sistema = (($monto_pagado_dolar * 20)/ 100) + $acumulado_sistema;
+    $monto_por_pagar = $acumulado_user + (($monto_pagado_dolar * 20)/ 100);
+    $ganancia_central = $acumulado_conteral + (($monto_pagado_dolar * 60)/ 100);
+    $ganancia_sistema = $acumulado_sistema + (($monto_pagado_dolar * 20)/ 100);
     //monto a pagar central y sistema
     UpdateRec("average_users", "id_user = 1", array("amount_pay"=>$ganancia_sistema));
     UpdateRec("average_users", "id_user = 2", array("amount_pay"=>$ganancia_central));

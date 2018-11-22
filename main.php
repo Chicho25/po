@@ -14,17 +14,17 @@
           exit;
      }
 
-  $precio_actual_dolar = GetRecords("select 
-                                      price_for_dollar, 
+  $precio_actual_dolar = GetRecords("select
+                                      price_for_dollar,
                                       price_sales
-                                      from 
+                                      from
                                       mov_bank
-                                      where 
-                                      id = (select 
+                                      where
+                                      id = (select
                                           max(id)
-                                          from 
+                                          from
                                           mov_bank
-                                          where 
+                                          where
                                           type_mov = 2)");
 
  ?>
@@ -50,7 +50,7 @@
                         <div class="col-md-3 b-b b-r">
                           <?php
                           $arrUser = GetRecords("select count(*) as total_trans from transaction where stat = 1");
-                          
+
                           $value = $arrUser[0]['total_trans'];?>
                           <a href="#" title="" class="block padder-v hover">
                             <span class="i-s i-s-2x pull-left m-r-sm">
@@ -74,7 +74,7 @@
                               $arrSum = GetRecords("select sum(amount_transfer) as total_trans_bss from transaction where stat = 1");
 
                               $sum = $arrSum[0]['total_trans_bss']/$precio_actual_dolar[0]['price_sales'];?>
-                              
+
                               <span class="h3 block m-t-xs text-danger"><?php echo number_format($sum, 2, ',', '.'); ?> $</span>
                               <small class="text-muted text-u-c">Pendiente en $</small>
                             </span>
@@ -292,7 +292,7 @@
                           </div>
                         </div>
                       </form>-->
-                      
+
                     </div>
                     <hr>
                     <script type="text/javascript">
@@ -331,13 +331,13 @@
                          },
                          series: [{
                              name: 'Population',
-                             <?php $paises = GetRecords("select c.name, 
-                                                                count(*) as cantidad,  
+                             <?php $paises = GetRecords("select c.name,
+                                                                count(*) as cantidad,
                                                                 sum(amount_transfer) as bss
                                                                 from transaction t inner join users u on t.id_user_register = u.id
                                                                                    inner join country c on u.location = c.id
-                                                                                   where 
-                                                                                   t.stat not in(4)
+                                                                                   where
+                                                                                   t.stat not in(4,3)
                                                                                    group by c.name"); ?>
                              data: [
                                <?php foreach($paises as $key => $value): ?>
